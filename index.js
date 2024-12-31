@@ -30,6 +30,18 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("undoButton").addEventListener("click", function() {
         undoAction(active_cell)
     });
+    const numberToggler = document.getElementById("numberButton")
+    numberToggler.addEventListener("click", function() {
+        if (isValid === true) {
+            toggleSums()
+            if (numberToggler.textContent === "Back") {
+                numberToggler.textContent = "Sum Boxes"
+            } else
+            numberToggler.textContent = "Back"
+        } else {
+            alert("Please clear the board before toggling the sums.")
+        }
+    });
 });
 
 let rows = Array(9).fill().map(() => ({}));
@@ -37,6 +49,24 @@ let cols = Array(9).fill().map(() => ({}));
 let boxes = Array(9).fill().map(() => ({}));
 let active_cell = null;
 let isValid = true;
+let togglingSums = false;
+
+function toggleSums() {
+    togglingSums = !togglingSums;
+    if (togglingSums == false) {
+        document.getElementById("sumButtons").classList.add("hidden");
+        return;
+    }
+    else {
+        isValid = false;
+        document.getElementById("sumButtons").classList.remove("hidden");
+    }
+    isValid = true
+}
+
+function displaySums() {
+
+}
 
 function clearCell(cell) {
     cell.value = ""; // Clear the input 
@@ -96,5 +126,8 @@ function clearSudoku(grid) {
     cols = Array(9).fill().map(() => ({}));
     boxes = Array(9).fill().map(() => ({}));
     isValid = true; // Reset the validation flag
+    togglingSums = false; // Reset the toggling flag
+    document.getElementById("numberButton").textContent = "Sum Boxes"
+    document.getElementById("sumButtons").classList.add("hidden")
 }
 

@@ -22,6 +22,10 @@
     caret-color: transparent;
   }
 
+  .sumButtons {
+    margin-bottom: 20px;
+  }
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -74,4 +78,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .cell:nth-child(n+46):nth-child(-n+54),
 .cell:nth-child(n+73):nth-child(-n+81) {
     border-bottom: 1px solid #000;
+}
+
+.hidden {
+    display: none;
 }
