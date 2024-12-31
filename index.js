@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("checkButton").addEventListener("click", function() {
         checkSudoku(grid);
     });
+
+    document.getElementById("clearButton").addEventListener("click", function() {
+        clearSudoku(grid);
+    });
 });
 
 function checkSudoku(grid) {
@@ -52,4 +56,14 @@ function checkSudoku(grid) {
         }
       }
       return isValid
+}
+
+function clearSudoku(grid) {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            let cell = grid[r][c];
+            cell.value = "";
+            cell.classList.remove("invalid");
+        }
+    }
 }
