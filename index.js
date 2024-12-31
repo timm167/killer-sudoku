@@ -10,50 +10,56 @@ document.addEventListener("DOMContentLoaded", function() {
         let row = [];
         for (let c = 0; c < 9; c++) {
             let cell = document.createElement("input");
-            cell.type = "number";
+            cell.type = "text";
             cell.classList.add("cell");
             cell.row = r;
             cell.col = c;
             cell.id = `${cell.row}/${cell.col}`
             cell.box = getBoxIndex(r, c);
+            cell.addEventListener("input", function() {
+                validateSudoku(cell)
+            });
             row.push(cell);
             gridElement.appendChild(cell);
         }
         grid.push(row);
     }
-
     document.getElementById("clearButton").addEventListener("click", function() {
         clearSudoku(grid);
     });
-    const cells = document.getElementsByClassName("cell");
-    for (let i = 0; i < cells.length; i++) {
-        cells[i].addEventListener("input", function() {
-            checkSudoku(cells[i]);
-        });
-    }
 });
 
-let rows = Array(9).fill().map(() => []);
-let cols = Array(9).fill().map(() => []);
-let boxes = Array(9).fill().map(() => []);
+let rows = Array(9).fill().map(() => ({}));
+let cols = Array(9).fill().map(() => ({}));
+let boxes = Array(9).fill().map(() => ({}));
 let isValid = true;
 
-function checkSudoku(selectedCell) { 
-    let r = selectedCell.row;
-    let c = selectedCell.col;
-    let boxIndex = selectedCell.box;
-    let value = selectedCell.value;
+function validateSudoku(cell) {
+    let value = cell.value;
+    if (!/^\d$/.test(value)) {
+        cell.value = ""; // Clear the input if it's not a single digit
+    } else {
+        checkSudoku(cell);
+    }
+}
+
+function checkSudoku(cell) { 
+    let r = cell.row;
+    let c = cell.col;
+    let boxIndex = cell.box;
+    let value = cell.value;
     
     if (value) {
         // Check if the value already exists in the row, column, or box
-        if (rows[r].includes(value) || cols[c].includes(value) || boxes[boxIndex].includes(value)) {
+        
+        if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(boxes[boxIndex]).includes(value)){
             isValid = false;
-            selectedCell.classList.add("invalid"); // Mark cell as invalid if duplicate found
+            cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
         } else {
             // Update the tracking arrays with the new value
-            rows[r].push(value);
-            cols[c].push(value);
-            boxes[boxIndex].push(value);
+            rows[r][cell.id] = value
+            cols[c][cell.id] = value
+            boxes[boxIndex][cell.id] = value;
         }
     }
 }
@@ -68,9 +74,9 @@ function clearSudoku(grid) {
         }
     }
     // Re-initialize empty tracking arrays
-    rows = Array(9).fill().map(() => []);
-    cols = Array(9).fill().map(() => []);
-    boxes = Array(9).fill().map(() => []);
+    rows = Array(9).fill().map(() => ({}));
+    cols = Array(9).fill().map(() => ({}));
+    boxes = Array(9).fill().map(() => ({}));
     isValid = true; // Reset the validation flag
 }
 
