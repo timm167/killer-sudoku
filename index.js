@@ -27,18 +27,36 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("clearButton").addEventListener("click", function() {
         clearSudoku(grid);
     });
+    document.getElementById("undoButton").addEventListener("click", function() {
+        undoAction(active_cell)
+    });
 });
 
 let rows = Array(9).fill().map(() => ({}));
 let cols = Array(9).fill().map(() => ({}));
 let boxes = Array(9).fill().map(() => ({}));
+let active_cell = null;
 let isValid = true;
+
+function clearCell(cell) {
+    cell.value = ""; // Clear the input 
+    rows[cell.row][cell.id] = ""; // Clear the tracking arrays
+    cols[cell.col][cell.id] = "";
+    boxes[cell.box][cell.id] = "";
+}
+
+function undoAction(cell) {
+    clearCell(cell);
+    cell.classList.remove("invalid"); // Remove the "invalid" css class
+    isValid = true; // Reset the validation flag
+}
 
 function validateSudoku(cell) {
     let value = cell.value;
-    if (!/^\d$/.test(value)) {
-        cell.value = ""; // Clear the input if it's not a single digit
+    if (!/^\d$/.test(value) || isValid === false) {
+        clearCell(cell);
     } else {
+        active_cell = cell;
         checkSudoku(cell);
     }
 }
