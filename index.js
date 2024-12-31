@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const gridElement = document.getElementById("grid");
     let grid = [];
     
-    function getBoxIndex(row, col) {
+    function getCubeIndex(row, col) {
         return Math.floor(row / 3) * 3 + Math.floor(col / 3);
     }
 
@@ -15,13 +15,21 @@ document.addEventListener("DOMContentLoaded", function() {
             cell.row = r;
             cell.col = c;
             cell.id = `${cell.row}/${cell.col}`
-            cell.box = getBoxIndex(r, c);
+            cell.cube = getCubeIndex(r, c);
+            cell.selected = false;
             cell.addEventListener("input", function() {
                 validateSudoku(cell)
             });
             cell.addEventListener("click", function() {
                 if (addingBox) {
                     cell.classList.toggle("selected");
+                    cell.selected = !cell.selected;
+                    if (cell.selected) {
+                        currentBox.push(cell);
+                    } else {
+                        currentBox = currentBox.filter((item) => item !== cell);
+                    }
+
                 } else {
                     addingBox = false;
                 }
@@ -42,6 +50,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("newBoxButton").addEventListener("click", function() {
         addingBox = !addingBox;
         document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
+        if (!addingBox) {
+            boxes[currentBox] = currentBox;
+            currentBox = [];
+        }
 
     });
     document.getElementById("delBoxButton").addEventListener("click", function() {
@@ -72,11 +84,13 @@ document.addEventListener("DOMContentLoaded", function() {
 // Initializing state tracking
 let rows = Array(9).fill().map(() => ({}));
 let cols = Array(9).fill().map(() => ({}));
-let boxes = Array(9).fill().map(() => ({}));
+let cubes = Array(9).fill().map(() => ({}));
 let active_cell = null;
 let isValid = true;
 let togglingSums = false;
 let addingBox = false;
+let boxes = {};
+let currentBox = [];
 
 // Toggle the visibility of sum-related controls
 function toggleSums() {
@@ -91,10 +105,7 @@ function toggleSums() {
     }
 }
 
-function newBox() {
-    addingBox = true;
-    
-}
+
 // END OF KILLER SUDOKU FUNCTIONS
 
 // FUNCTIONS FOR ADDING SUDOKU FUNCTIONALITY
@@ -102,7 +113,7 @@ function clearCell(cell) {
     cell.value = ""; // Clear the input 
     rows[cell.row][cell.id] = ""; // Clear the tracking arrays
     cols[cell.col][cell.id] = "";
-    boxes[cell.box][cell.id] = "";
+    cubes[cell.cube][cell.id] = "";
 }
 
 function undoAction(cell) {
@@ -124,20 +135,20 @@ function validateSudoku(cell) {
 function checkSudoku(cell) { 
     let r = cell.row;
     let c = cell.col;
-    let boxIndex = cell.box;
+    let cubeIndex = cell.cube;
     let value = cell.value;
     
     if (value) {
-        // Check if the value already exists in the row, column, or box
+        // Check if the value already exists in the row, column, or cube
         
-        if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(boxes[boxIndex]).includes(value)){
+        if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(cubes[cubeIndex]).includes(value)){
             isValid = false;
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
         } else {
             // Update the tracking arrays with the new value
             rows[r][cell.id] = value
             cols[c][cell.id] = value
-            boxes[boxIndex][cell.id] = value;
+            cubes[cubeIndex][cell.id] = value;
         }
     }
 }
@@ -155,7 +166,7 @@ function clearSudoku(grid) {
     // Re-initialize empty tracking arrays
     rows = Array(9).fill().map(() => ({}));
     cols = Array(9).fill().map(() => ({}));
-    boxes = Array(9).fill().map(() => ({}));
+    cubes = Array(9).fill().map(() => ({}));
     isValid = true; // Reset the validation flag
     togglingSums = false; // Reset the toggling flag
     document.getElementById("numberButton").textContent = "Sum Boxes"
