@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
             cell.id = `${cell.row}/${cell.col}`
             cell.cube = getCubeIndex(r, c);
             cell.selected = false;
+            cell.actualValue = undefined;
             cell.addEventListener("input", function() {
                 validateSudoku(cell)
             });
@@ -41,6 +42,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // BUTTONS FOR GAME FUNCTIONALITY
+    document.getElementById("showSum").addEventListener("click", function() {
+        console.log(boxes);
+    });
     document.getElementById("clearButton").addEventListener("click", function() {
         clearSudoku(grid);
     });
@@ -51,7 +55,11 @@ document.addEventListener("DOMContentLoaded", function() {
         addingBox = !addingBox;
         document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
         if (!addingBox) {
-            boxes[currentBox] = currentBox;
+            let sumBox = 0;
+            for (let i = 0; i < currentBox.length; i++) {
+                sumBox += parseInt(currentBox[i].value);
+            }
+            boxes[currentBox] = sumBox;
             currentBox = [];
         }
 
@@ -169,6 +177,8 @@ function clearSudoku(grid) {
     cubes = Array(9).fill().map(() => ({}));
     isValid = true; // Reset the validation flag
     togglingSums = false; // Reset the toggling flag
+    currentBox = [];
+    boxes = {};
     document.getElementById("numberButton").textContent = "Sum Boxes"
     document.getElementById("sumButtons").classList.add("hidden")
 }
