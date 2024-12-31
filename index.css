@@ -41,8 +41,15 @@ input[type="number"]::-webkit-inner-spin-button {
   
 
   .invalid {
-    background-color: #f00;
+    background-color: salmon;
   }
+
+  .cell.invalid:focus {
+    outline: none;
+    background-color:salmon; 
+    border-color: rgb(209, 70, 70);
+  }
+
 
   /* Add thicker borders to separate 3x3 boxes */
 .cell:nth-child(3n+1) {
