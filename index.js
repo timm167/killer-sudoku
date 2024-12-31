@@ -40,8 +40,10 @@ function checkSudoku(grid) {
             if (value) {
                 if (rows[r].includes(value) || cols[c].includes(value) || boxes[cell.box].includes(value)) {
                     isValid = false;
+                    cell.classList.add("invalid");
                     return
                 } else {
+                    cell.classList.remove("invalid");
                     rows[r].push(value);
                     cols[c].push(value);
                     boxes[cell.box].push(value);

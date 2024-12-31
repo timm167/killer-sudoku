@@ -2,16 +2,69 @@
     display: grid;
     grid-template-columns: repeat(9, 40px);
     grid-template-rows: repeat(9, 40px); /* 9 rows */
-    grid-gap: 1px;
     margin-bottom: 30px;
+    border: 1px solid #000;
+    width: fit-content;
   }
+
   .cell {
     width: 40px;
     height: 40px;
+    font-size: 20px;
     text-align: center;
-    font-size: 18px;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    caret-color: transparent;
   }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+  .cell:focus {
+    outline: none;
+    background-color: rgb(118, 169, 214);
+    border-color: rgb(70, 70, 209);
+  }
+
   button {
     padding: 10px 20px;
     font-size: 16px;
   }
+  
+
+  .invalid {
+    background-color: #f00;
+  }
+
+  /* Add thicker borders to separate 3x3 boxes */
+.cell:nth-child(3n+1) {
+    border-left: 1px solid #000;
+}
+
+.cell:nth-child(3n+3) {
+    border-right: 1px solid #000;
+}
+
+.cell:nth-child(3n) {
+    border-right: 1px solid #000;
+}
+
+.cell:nth-child(n+1):nth-child(-n+9),
+.cell:nth-child(n+28):nth-child(-n+36),
+.cell:nth-child(n+55):nth-child(-n+63) {
+    border-top: 1px solid #000;
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54),
+.cell:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: 1px solid #000;
+}
