@@ -1,15 +1,15 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(9, 40px);
-    grid-gap: 5px;
-    margin-bottom: 10px;
+    grid-template-rows: repeat(9, 40px); /* 9 rows */
+    grid-gap: 1px;
+    margin-bottom: 30px;
   }
   .cell {
     width: 40px;
     height: 40px;
     text-align: center;
     font-size: 18px;
-    border: 1px solid black;
   }
   button {
     padding: 10px 20px;

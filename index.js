@@ -14,5 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
       }
       grid.push(row);
     }
+
+    function getBoxIndex(row, col) {
+        return Math.floor(row / 3) * 3 + Math.floor(col / 3);
+      }
+    
+    console.log(getBoxIndex(3, 8));
   });
   
