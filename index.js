@@ -2,57 +2,30 @@ document.addEventListener("DOMContentLoaded", function() {
     const gridElement = document.getElementById("grid");
     let grid = [];
     
+    // Helper function to get the cube index
     function getCubeIndex(row, col) {
         return Math.floor(row / 3) * 3 + Math.floor(col / 3);
     }
 
-    for (let r = 0; r < 9; r++) {
-        let row = [];
-        for (let c = 0; c < 9; c++) {
-            let cell = document.createElement("input");
-            cell.type = "text";
-            cell.classList.add("cell");
-            cell.row = r;
-            cell.col = c;
-            cell.id = `${cell.row}/${cell.col}`
-            cell.cube = getCubeIndex(r, c);
-            cell.selected = false;
-            cell.actualValue = 0;
-            cell.inBox = null;
-            cell.addEventListener("input", function() {
-                validateSudoku(cell)
-            });
-            cell.addEventListener("click", function() {
-                if (addingBox) {
-                    cell.classList.toggle("selected");
-                    cell.selected = !cell.selected;
-                    if (cell.selected) {
-                        currentBox.push(cell);
-                    } else {
-                        currentBox = currentBox.filter((item) => item !== cell);
-                    }
+    // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
+    function addCellToBox(cell) {
+        if (addingBox  && !cellsWithBox.includes(cell)) {
+            cell.classList.toggle("selected");
+            cell.selected = !cell.selected;
+            if (cell.selected) {
+                currentBox.push(cell);
+            } else {
+                currentBox = currentBox.filter((item) => item !== cell);
+            }
 
-                } else {
-                    addingBox = false;
-                }
-            });
-            row.push(cell);
-            gridElement.appendChild(cell);
+        } else {
+            addingBox = false;
         }
-        grid.push(row);
     }
 
-    // BUTTONS FOR GAME FUNCTIONALITY
-    document.getElementById("showSum").addEventListener("click", function() {
-        console.log(boxes);
-    });
-    document.getElementById("clearButton").addEventListener("click", function() {
-        clearSudoku(grid);
-    });
-    document.getElementById("undoButton").addEventListener("click", function() {
-        undoAction(active_cell)
-    });
-    document.getElementById("newBoxButton").addEventListener("click", function() {
+    // Helper function to create a box when the "New Box" button is clicked
+    // Second click will place the box
+    function createBox() {
         addingBox = !addingBox;
         document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
         if (!addingBox) {
@@ -60,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let sumBox = 0;
             for (let i = 0; i < currentBox.length; i++) {
                 sumBox += currentBox[i].actualValue;
+                cellsWithBox.push(currentBox[i]);
             }
             boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
             for (let i = 0; i < currentBox.length; i++) {
@@ -67,68 +41,118 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             currentBox = [];
         }
+    }
 
-    });
-    document.getElementById("delBoxButton").addEventListener("click", function() {
-        undoAction(active_cell)
-    });
-    document.getElementById("setBoxButton").addEventListener("click", function() {
-        undoAction(active_cell)
-    });
+    // Toggle the visibility of sum-related controls
+    function toggleSums() {
+        togglingSums = !togglingSums;
+        const sumButtons = document.getElementById("sumButtons");
 
-    const numberToggler = document.getElementById("numberButton");
-
-    // Toggle sums when the button is clicked
-    numberToggler.addEventListener("click", function () {
-        if (!isValid) {
-            if (!togglingSums) {
-                alert("Please remove errors from the board before toggling the sums.");
-                return;
-            }
-            isValid = true;
+        if (togglingSums) {
+            isValid = false; // Disable Sudoku validation while summing
+            sumButtons.classList.remove("hidden");
+        } else {
+            sumButtons.classList.add("hidden");
         }
+    }
 
-        toggleSums();
+    // Helper function to set up event listeners for buttons
+    function setupEventListeners() {
+        document.getElementById("showSum").addEventListener("click", function() {
+            console.log(boxes);
+        });
+        document.getElementById("clearButton").addEventListener("click", function() {
+            clearSudoku(grid);
+        });
+        document.getElementById("undoButton").addEventListener("click", function() {
+            undoAction(active_cell)
+        });
+        document.getElementById("newBoxButton").addEventListener("click", function() {
+            createBox();
+        });
+        document.getElementById("delBoxButton").addEventListener("click", function() {
+            undoAction(active_cell)
+        });
+        document.getElementById("setBoxButton").addEventListener("click", function() {
+            undoAction(active_cell)
+        });
 
-        // Update button text based on the state
-        numberToggler.textContent = togglingSums ? "Back" : "Sum Boxes";
-    });
+        const numberToggler = document.getElementById("numberButton");
+
+        // Toggle sums when the button is clicked
+        numberToggler.addEventListener("click", function () {
+            if (!isValid) {
+                if (!togglingSums) {
+                    alert("Please remove errors from the board before toggling the sums.");
+                    return;
+                }
+                isValid = true;
+            }
+    
+            toggleSums();
+    
+            // Update button text based on the state
+            numberToggler.textContent = togglingSums ? "Back" : "Sum Boxes";
+        });
+    }
+
+    // Create the Sudoku grid
+    // Initialises each cell with the necessary properties and event listeners
+    function createSudokuGrid() {
+        for (let r = 0; r < 9; r++) {
+            let row = [];
+            for (let c = 0; c < 9; c++) {
+                let cell = document.createElement("input");
+                cell.type = "text";
+                cell.classList.add("cell");
+                cell.row = r;
+                cell.col = c;
+                cell.id = `${cell.row}/${cell.col}`
+                cell.cube = getCubeIndex(r, c);
+                cell.selected = false;
+                cell.actualValue = 0;
+                cell.inBox = null;
+                cell.addEventListener("input", function() {
+                    validateSudoku(cell)
+                });
+                cell.addEventListener("click", function() {
+                    addCellToBox(cell);
+                });
+                row.push(cell);
+                gridElement.appendChild(cell);
+            }
+            grid.push(row);
+        };
+    };
+
+
+    setupEventListeners();
+    createSudokuGrid();
+
 });
 // Initializing state tracking
-let rows = Array(9).fill().map(() => ({}));
-let cols = Array(9).fill().map(() => ({}));
-let cubes = Array(9).fill().map(() => ({}));
-let active_cell = null;
+let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
+let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
+let cubes = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
+let active_cell = []; // Used to track the most recently edited cell for undo
 let isValid = true;
 let togglingSums = false;
 let addingBox = false;
 let boxes = {};
 let currentBox = [];
 let boxCount = 0;
+let cellsWithBox = []; 
 
-// Toggle the visibility of sum-related controls
-function toggleSums() {
-    togglingSums = !togglingSums;
-    const sumButtons = document.getElementById("sumButtons");
-
-    if (togglingSums) {
-        isValid = false; // Disable Sudoku validation while summing
-        sumButtons.classList.remove("hidden");
-    } else {
-        sumButtons.classList.add("hidden");
-    }
-}
-
-// END OF KILLER SUDOKU FUNCTIONS
-
-// FUNCTIONS FOR ADDING SUDOKU FUNCTIONALITY
+// Helper function to clear a cell
 function clearCell(cell) {
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
-    boxes[cell.inBox]['sum'] -= cell.actualValue;
-    rows[cell.row][cell.id] = ""; // Clear the tracking arrays
+    rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
     cols[cell.col][cell.id] = "";
     cubes[cell.cube][cell.id] = "";
+    cell.inBox = null;
+    boxes[cell.inBox]['sum'] -= cell.actualValue;
+    cellsWithBox = cellsWithBox.filter((item) => item !== cell);
 }
 
 function undoAction(cell) {
@@ -142,7 +166,7 @@ function validateSudoku(cell) {
     if (!/^\d$/.test(value) || isValid === false) {
         clearCell(cell);
     } else {
-        active_cell = cell;
+        active_cell.push(cell);
         checkSudoku(cell);
     }
 }
@@ -190,7 +214,7 @@ function clearSudoku(grid) {
     togglingSums = false; // Reset the toggling flag
     currentBox = [];
     boxes = {};
+    cellsWithBox = [];
     document.getElementById("numberButton").textContent = "Sum Boxes"
     document.getElementById("sumButtons").classList.add("hidden")
 }
-
