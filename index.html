@@ -10,23 +10,29 @@
     <body>
 
         <h1>Killer Sudoku Builder</h1>
-        <button id="colorView">Pick a Color</button>
-
-        <div id="grid" class="grid">
-            
+        <div class="navigation">
+            <button id="undoButton" class="button">Undo</button>
+            <button id="Save" class="button">Save</button>
+            <button id="clearButton" class="button">Reset</button>
+            <button id="numberButton" class="button">Killer Mode</button>
+        </div>
+        <div class="grid-holder">
+            <div id="grid" class="grid">
+                <!-- Grid filled by JS -->
+            </div>
         </div>
 
-        <div id="sumButtons" class="hidden">        
-            <button id="newBoxButton">New Box</button>
-            <button id="delBoxButton">Delete Box</button>
-            <button id="setBoxButton">Set Box Total</button>
+        <div id="sumButtons" class="hidden navigation">        
+            <button id="delBoxButton" class="button">Delete Box</button>
+            <button id="setBoxButton" class="button">Set Box Total</button>
+            <button id="newBoxButton" class="button">New Box</button>
+            <button id="colorView" class="button">Toggle Color</button>
         </div>
-        
-        <button id="clearButton" >Reset</button>
-        <button id="undoButton" >Undo</button>
-        <button id="numberButton">Sum Boxes</button>
-        <!-- <button id="showSum">Show Sum</button> -->
-        <!-- <button id="checkButton" >Check Puzzle</button>
-        <button id="solveButton" >Solve Puzzle</button> -->
+
+        <div class="check-solve">
+            <button id="checkButton" class="button">Check Puzzle</button>
+            <button id="solveButton" class="button">Solve Puzzle</button> 
+        </div>
+
     </body>
 </html>

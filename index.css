@@ -1,5 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #72ae92;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.check-solve .button {
+    width: 200px;
+    padding: 15px 25px;
+
+}
+
+.check-solve {
+    display: flex;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    justify-items: space-around;
+    justify-content: space-around;
+}
+
+.navigation .button {
+    width: 150px;
+    margin-top: 10px;
+    height: 40px;
+}
+
 .selected {
     background-color: rgb(222, 241, 80);
+}
+
+.navigation {
+    margin-bottom: 30px;
+}
+
+@media (max-width: 750px) {
+    .navigation {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+.grid-holder {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+}
+
+#numberButton {
+    margin-bottom: 30px;
+    background-color: rgb(201, 78, 78);
+    border: 1px solid black;
 }
 
 .grid {

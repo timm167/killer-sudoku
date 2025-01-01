@@ -135,7 +135,7 @@ function setupEventListeners() {
         toggleSums();
 
         // Update button text based on the state
-        numberToggler.textContent = togglingSums ? "Stop Summing Boxes" : "Sum Boxes";
+        numberToggler.textContent = togglingSums ? "Exit Killer" : "Killer Mode";
     });
 }
 
@@ -184,7 +184,6 @@ function colorChange() {
     buttonColor = availableColors.pop()
     colorIndex = availableColors.length;
     colorView.classList.add(buttonColor);
-    colorView.textContent = buttonColor;
 }
 
 colorView.addEventListener("click", function() {
@@ -288,11 +287,11 @@ function clearSudoku(grid) {
     boxes = {};
     cells_with_box = [];
     active_cell = [];   
-    document.getElementById("numberButton").textContent = "Sum Boxes"
+    document.getElementById("numberButton").textContent = "Killer Mode";
     document.getElementById("sumButtons").classList.add("hidden")
     console.clear();
     colorView.classList.remove(buttonColor);
-    colorView.textContent = "Pick a Color";
+    colorView.textContent = "Toggle Color";
     colorIndex = 0;
     availableColors = transparentColors;
 }
