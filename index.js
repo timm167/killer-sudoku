@@ -7,175 +7,169 @@ import {transparentColors} from './colors.js';
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES
 // MAKE addCellToBox less ugly (max twice nested)
 
-document.addEventListener("DOMContentLoaded", function() {
-    const gridElement = document.getElementById("grid");
-    let grid = [];
-    
-    // Helper function to get the cube index
-    function getCubeIndex(row, col) {
-        return Math.floor(row / 3) * 3 + Math.floor(col / 3);
-    }
+const gridElement = document.getElementById("grid");
+let grid = [];
 
-    // Helper function to check if a cell is adjacent to at least one member in currentBox
-    function isAdjacent(cell) {
-        for (let i = 0; i < currentBox.length; i++) {
-            let boxCell = currentBox[i];
-            if ((cell.row === boxCell.row && (cell.col === boxCell.col + 1 || cell.col === boxCell.col - 1)) ||
-                (cell.col === boxCell.col && (cell.row === boxCell.row + 1 || cell.row === boxCell.row - 1))) {
-                return true;
-            }
-        }
-        return false;
-    }
+// Helper function to get the cube index
+function getCubeIndex(row, col) {
+    return Math.floor(row / 3) * 3 + Math.floor(col / 3);
+}
 
-    // Helper function to check if a cell is a valid addition to a box
-    function isValidBoxAddition(cell) {
-        if (!cells_with_box.includes(cell)) {
-            if (currentBox.length === 0) {
-                return true;
-            } else {
-                return isAdjacent(cell);
-            }
-        }
-        
-    }
-    // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
-    function addCellToBox(cell) {
-        if (isValidBoxAddition(cell)) {
-            if (addingBox) {
-                cell.classList.toggle("selected");
-                cell.selected = !cell.selected;
-                if (cell.selected) {
-                    currentBox.push(cell);
-                } else {
-                    currentBox = currentBox.filter((item) => item !== cell);
-                }
-            } else {
-                addingBox = false;
-            }
+// Helper function to check if a cell is adjacent to at least one member in currentBox
+function isAdjacent(cell) {
+    for (let i = 0; i < currentBox.length; i++) {
+        let boxCell = currentBox[i];
+        if ((cell.row === boxCell.row && (cell.col === boxCell.col + 1 || cell.col === boxCell.col - 1)) ||
+            (cell.col === boxCell.col && (cell.row === boxCell.row + 1 || cell.row === boxCell.row - 1))) {
+            return true;
         }
     }
+    return false;
+}
 
-    function colorBox(box) {
-        let color = cellColors[colorIndex];
-        for (let i = 0; i < box.length; i++) {
-            box[i].classList.add(color);
-            box[i].classList.remove("selected");
-            box[i].color = color;
-            colorChange();
-        }
-    }
-
-    // Helper function to create a box when the "New Box" button is clicked
-    // Second click will place the box
-    function createBox() {
-        addingBox = !addingBox;
-        document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
-        if (!addingBox) {
-            let boxId = `box${boxCount++}`;
-            let sumBox = 0;
-            colorBox(currentBox);
-            for (let i = 0; i < currentBox.length; i++) {
-                sumBox += currentBox[i].actualValue;
-                cells_with_box.push(currentBox[i]);
-            }
-            boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
-            for (let i = 0; i < currentBox.length; i++) {
-                currentBox[i].inBox = boxId;
-            }
-            currentBox = [];
-        }
-    }
-
-    // Toggle the visibility of sum-related controls
-    function toggleSums() {
-        togglingSums = !togglingSums;
-        const sumButtons = document.getElementById("sumButtons");
-
-        if (togglingSums) {
-            isValid = false; // Disable Sudoku validation while summing
-            sumButtons.classList.remove("hidden");
+// Helper function to check if a cell is a valid addition to a box
+function isValidBoxAddition(cell) {
+    if (!cells_with_box.includes(cell)) {
+        if (currentBox.length === 0) {
+            return true;
         } else {
-            sumButtons.classList.add("hidden");
+            return isAdjacent(cell);
         }
     }
-
-    // Helper function to set up event listeners for buttons
-    function setupEventListeners() {
-        // document.getElementById("showSum").addEventListener("click", function() {
-        //     console.log(boxes);
-        // });
-        document.getElementById("clearButton").addEventListener("click", function() {
-            clearSudoku(grid);
-        });
-        document.getElementById("undoButton").addEventListener("click", function() {
-            undoAction((active_cell[active_cell.length - 1]))
-        });
-        document.getElementById("newBoxButton").addEventListener("click", function() {
-            createBox();
-        });
-        document.getElementById("delBoxButton").addEventListener("click", function() {
-            undoAction(active_cell[-1])
-        });
-        document.getElementById("setBoxButton").addEventListener("click", function() {
-            undoAction(active_cell[-1])
-        });
-
-        const numberToggler = document.getElementById("numberButton");
-
-        // Toggle sums when the button is clicked
-        numberToggler.addEventListener("click", function () {
-            if (!isValid) {
-                if (!togglingSums) {
-                    alert("Please remove errors from the board before toggling the sums.");
-                    return;
-                }
-                isValid = true;
+    
+}
+// Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
+function addCellToBox(cell) {
+    if (isValidBoxAddition(cell)) {
+        if (addingBox) {
+            cell.classList.toggle("selected");
+            cell.selected = !cell.selected;
+            if (cell.selected) {
+                currentBox.push(cell);
+            } else {
+                currentBox = currentBox.filter((item) => item !== cell);
             }
-    
-            toggleSums();
-    
-            // Update button text based on the state
-            numberToggler.textContent = togglingSums ? "Back" : "Sum Boxes";
-        });
+        } else {
+            addingBox = false;
+        }
     }
+}
 
-    // Create the Sudoku grid
-    // Initializes each cell with the necessary properties and event listeners
-    function createSudokuGrid() {
-        for (let r = 0; r < 9; r++) {
-            let row = [];
-            for (let c = 0; c < 9; c++) {
-                let cell = document.createElement("input");
-                cell.type = "text";
-                cell.classList.add("cell");
-                cell.row = r;
-                cell.col = c;
-                cell.id = `${cell.row}/${cell.col}`
-                cell.cube = getCubeIndex(r, c);
-                cell.selected = false;
-                cell.actualValue = 0;
-                cell.inBox = null;
-                cell.color = null;
-                cell.value = cell.id;
-                cell.addEventListener("input", function() {
-                    validateSudoku(cell)
-                });
-                cell.addEventListener("click", function() {
-                    addCellToBox(cell);
-                });
-                row.push(cell);
-                gridElement.appendChild(cell);
+function colorBox(box) {
+    let color = cellColors[colorIndex];
+    for (let i = 0; i < box.length; i++) {
+        box[i].classList.add(color);
+        box[i].classList.remove("selected");
+        box[i].color = color;
+        colorChange();
+    }
+}
+
+// Helper function to create a box when the "New Box" button is clicked
+// Second click will place the box
+function createBox() {
+    addingBox = !addingBox;
+    document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
+    if (!addingBox) {
+        let boxId = `box${boxCount++}`;
+        let sumBox = 0;
+        colorBox(currentBox);
+        for (let i = 0; i < currentBox.length; i++) {
+            sumBox += currentBox[i].actualValue;
+            cells_with_box.push(currentBox[i]);
+        }
+        boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+        for (let i = 0; i < currentBox.length; i++) {
+            currentBox[i].inBox = boxId;
+        }
+        currentBox = [];
+    }
+}
+
+// Toggle the visibility of sum-related controls
+function toggleSums() {
+    togglingSums = !togglingSums;
+    const sumButtons = document.getElementById("sumButtons");
+
+    if (togglingSums) {
+        isValid = false; // Disable Sudoku validation while summing
+        sumButtons.classList.remove("hidden");
+    } else {
+        sumButtons.classList.add("hidden");
+    }
+}
+
+// Helper function to set up event listeners for buttons
+function setupEventListeners() {
+    // document.getElementById("showSum").addEventListener("click", function() {
+    //     console.log(boxes);
+    // });
+    document.getElementById("clearButton").addEventListener("click", function() {
+        clearSudoku(grid);
+    });
+    document.getElementById("undoButton").addEventListener("click", function() {
+        undoAction((active_cell[active_cell.length - 1]))
+    });
+    document.getElementById("newBoxButton").addEventListener("click", function() {
+        createBox();
+    });
+    document.getElementById("delBoxButton").addEventListener("click", function() {
+        undoAction(active_cell[-1])
+    });
+    document.getElementById("setBoxButton").addEventListener("click", function() {
+        undoAction(active_cell[-1])
+    });
+
+    const numberToggler = document.getElementById("numberButton");
+
+    // Toggle sums when the button is clicked
+    numberToggler.addEventListener("click", function () {
+        if (!isValid) {
+            if (!togglingSums) {
+                alert("Please remove errors from the board before toggling the sums.");
+                return;
             }
-            grid.push(row);
-        };
+            isValid = true;
+        }
+
+        toggleSums();
+
+        // Update button text based on the state
+        numberToggler.textContent = togglingSums ? "Stop Summing Boxes" : "Sum Boxes";
+    });
+}
+
+// Create the Sudoku grid
+// Initializes each cell with the necessary properties and event listeners
+function createSudokuGrid() {
+    for (let r = 0; r < 9; r++) {
+        let row = [];
+        for (let c = 0; c < 9; c++) {
+            let cell = document.createElement("input");
+            cell.type = "text";
+            cell.classList.add("cell");
+            cell.row = r;
+            cell.col = c;
+            cell.id = `${cell.row}/${cell.col}`
+            cell.cube = getCubeIndex(r, c);
+            cell.selected = false;
+            cell.actualValue = 0;
+            cell.inBox = null;
+            cell.color = null;
+            cell.addEventListener("input", function() {
+                validateSudoku(cell)
+            });
+            cell.addEventListener("click", function() {
+                selectedCell = cell;
+                addCellToBox(cell);
+            });
+            row.push(cell);
+            gridElement.appendChild(cell);
+        }
+        grid.push(row);
     };
+};
 
-    // Initialize the Sudoku grid
-    setupEventListeners();
-    createSudokuGrid();
-
-});
 
 const colorView = document.getElementById("colorView")
 let buttonColor = 'white'
@@ -209,6 +203,7 @@ let boxes = {}; // Used to track the boxes, their cells, and their sums
 let currentBox = []; // Used to track the cells selected for a box
 let boxCount = 0; // Used to track the number of boxes created for indexing
 let cells_with_box = []; // Used to track cells that are part of a box
+let selectedCell = null; // Used to track the most recently selected cell
 const cellColors = [...transparentColors] // Used to track the colors available for boxes
 
 // Helper function to clear a cell
@@ -301,3 +296,59 @@ function clearSudoku(grid) {
     colorIndex = 0;
     availableColors = transparentColors;
 }
+
+// GLOBAL EVENT LISTENERS
+
+// KEY INPUTS
+
+document.addEventListener("keydown", function(e) {
+    console.log(e.key)
+    if (isValid === false && togglingSums === false) {
+        document.getElementById("undoButton").click();
+    }
+    else if (e.key === "Backspace" && (e.ctrlKey || e.shiftKey)) {
+        document.getElementById("clearButton").click();
+    }
+    else if (e.key === "Backspace") {
+        document.getElementById("undoButton").click();
+    }
+    else if (e.key === "ArrowUp") {
+        let cell = selectedCell
+        let row = cell.row;
+        let col = cell.col;
+        let newRow = row === 0 ? 8 : row - 1;
+        selectedCell = grid[newRow][col];
+        selectedCell.focus();
+    }
+    else if (e.key === "ArrowDown") {
+        let cell = selectedCell
+        let row = cell.row;
+        let col = cell.col;
+        let newRow = row === 8 ? 0 : row + 1;
+        selectedCell = grid[newRow][col];
+        selectedCell.focus();
+    }
+    else if (e.key === "ArrowLeft") {
+        let cell = selectedCell
+        let row = cell.row;
+        let col = cell.col;
+        let newCol = col === 0 ? 8 : col - 1;
+        selectedCell = grid[row][newCol];
+        selectedCell.focus();
+    }
+    else if (e.key === "ArrowRight") {
+        let cell = selectedCell
+        let row = cell.row;
+        let col = cell.col;
+        let newCol = col === 8 ? 0 : col + 1;
+        selectedCell = grid[row][newCol];
+        selectedCell.focus();
+    }
+})
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Initialize the Sudoku grid
+    setupEventListeners();
+    createSudokuGrid();
+});
