@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
     function addCellToBox(cell) {
-        if (addingBox  && !cellsWithBox.includes(cell)) {
+        if (addingBox  && !cells_with_box.includes(cell)) {
             cell.classList.toggle("selected");
             cell.selected = !cell.selected;
             if (cell.selected) {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             let sumBox = 0;
             for (let i = 0; i < currentBox.length; i++) {
                 sumBox += currentBox[i].actualValue;
-                cellsWithBox.push(currentBox[i]);
+                cells_with_box.push(currentBox[i]);
             }
             boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
             for (let i = 0; i < currentBox.length; i++) {
@@ -65,16 +65,16 @@ document.addEventListener("DOMContentLoaded", function() {
             clearSudoku(grid);
         });
         document.getElementById("undoButton").addEventListener("click", function() {
-            undoAction(active_cell)
+            undoAction((active_cell[active_cell.length - 1]))
         });
         document.getElementById("newBoxButton").addEventListener("click", function() {
             createBox();
         });
         document.getElementById("delBoxButton").addEventListener("click", function() {
-            undoAction(active_cell)
+            undoAction(active_cell[-1])
         });
         document.getElementById("setBoxButton").addEventListener("click", function() {
-            undoAction(active_cell)
+            undoAction(active_cell[-1])
         });
 
         const numberToggler = document.getElementById("numberButton");
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Create the Sudoku grid
-    // Initialises each cell with the necessary properties and event listeners
+    // Initializes each cell with the necessary properties and event listeners
     function createSudokuGrid() {
         for (let r = 0; r < 9; r++) {
             let row = [];
@@ -125,34 +125,37 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     };
 
-
+    // Initialize the Sudoku grid
     setupEventListeners();
     createSudokuGrid();
 
 });
+
 // Initializing state tracking
 let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
 let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
 let cubes = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
 let active_cell = []; // Used to track the most recently edited cell for undo
-let isValid = true;
-let togglingSums = false;
-let addingBox = false;
-let boxes = {};
-let currentBox = [];
-let boxCount = 0;
-let cellsWithBox = []; 
+let isValid = true; // Used to track if an input is valid and halts activity. Also used to halt activity when toggling sums.
+let togglingSums = false; // Used to track if the sums are being toggled (i.e. if the "Sum Boxes" button has been clicked)
+let addingBox = false; // Used to track if the "Place Box" button has been clicked so user can select cells to add to a box
+let boxes = {}; // Used to track the boxes, their cells, and their sums
+let currentBox = []; // Used to track the cells selected for a box
+let boxCount = 0; // Used to track the number of boxes created for indexing
+let cells_with_box = []; // Used to track cells that are part of a box
 
 // Helper function to clear a cell
 function clearCell(cell) {
+    console.log(cell)
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
     rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
     cols[cell.col][cell.id] = "";
     cubes[cell.cube][cell.id] = "";
+    cell.inBox && (boxes[cell.inBox]['sum'] -= cell.actualValue);
     cell.inBox = null;
-    boxes[cell.inBox]['sum'] -= cell.actualValue;
-    cellsWithBox = cellsWithBox.filter((item) => item !== cell);
+    cells_with_box = cells_with_box.filter((item) => item !== cell);
+    active_cell = active_cell.filter((item) => item !== cell);
 }
 
 function undoAction(cell) {
@@ -214,7 +217,8 @@ function clearSudoku(grid) {
     togglingSums = false; // Reset the toggling flag
     currentBox = [];
     boxes = {};
-    cellsWithBox = [];
+    cells_with_box = [];
+    active_cell = [];   
     document.getElementById("numberButton").textContent = "Sum Boxes"
     document.getElementById("sumButtons").classList.add("hidden")
 }
