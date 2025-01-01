@@ -1,0 +1,22 @@
+export const transparentColors = [
+  "red",
+  "green",
+  "blue",
+  "yellow",
+  "cyan",
+  "magenta",
+  "maroon",
+  "dark-green",
+  "navy",
+  "olive",
+  "purple",
+  "teal",
+  "orange",
+  "indigo",
+  "violet",
+  "saddle-brown",
+  "spring-green",
+  "steel-blue",
+  "khaki",
+  "crimson"
+];

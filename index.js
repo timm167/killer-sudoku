@@ -1,3 +1,11 @@
+import {transparentColors} from './colors.js';
+
+// TODO
+// clicking on a box that's been picked fucks everything up. fix that.
+// ADD FUNCTIONALITY TO DELETE BOXES
+// FIX UNDO TO NOT DELETE BOXES
+// ADD BOX ACTION UNDO SPECIFIC TO BOXES
+
 document.addEventListener("DOMContentLoaded", function() {
     const gridElement = document.getElementById("grid");
     let grid = [];
@@ -23,6 +31,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    function colorBox(box) {
+        let color = available_box_colors.pop();
+        for (let i = 0; i < box.length; i++) {
+            console.log("coloring")
+            console.log(box[i])
+            console.log(color)
+            box[i].classList.add(color);
+            box[i].classList.remove("selected");
+            box[i].color = color;
+        }
+    }
+
     // Helper function to create a box when the "New Box" button is clicked
     // Second click will place the box
     function createBox() {
@@ -31,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (!addingBox) {
             let boxId = `box${boxCount++}`;
             let sumBox = 0;
+            colorBox(currentBox);
             for (let i = 0; i < currentBox.length; i++) {
                 sumBox += currentBox[i].actualValue;
                 cells_with_box.push(currentBox[i]);
@@ -112,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 cell.selected = false;
                 cell.actualValue = 0;
                 cell.inBox = null;
+                cell.color = null;
                 cell.addEventListener("input", function() {
                     validateSudoku(cell)
                 });
@@ -132,9 +154,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Initializing state tracking
-let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
-let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
-let cubes = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays
+let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for rows
+let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for columns
+let cubes = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for 3x3 cubes
 let active_cell = []; // Used to track the most recently edited cell for undo
 let isValid = true; // Used to track if an input is valid and halts activity. Also used to halt activity when toggling sums.
 let togglingSums = false; // Used to track if the sums are being toggled (i.e. if the "Sum Boxes" button has been clicked)
@@ -143,12 +165,14 @@ let boxes = {}; // Used to track the boxes, their cells, and their sums
 let currentBox = []; // Used to track the cells selected for a box
 let boxCount = 0; // Used to track the number of boxes created for indexing
 let cells_with_box = []; // Used to track cells that are part of a box
+let available_box_colors = transparentColors // Used to track the colors available for boxes
 
 // Helper function to clear a cell
 function clearCell(cell) {
     console.log(cell)
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
+    cell.classList.remove(cell.color)
     rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
     cols[cell.col][cell.id] = "";
     cubes[cell.cube][cell.id] = "";
@@ -158,12 +182,14 @@ function clearCell(cell) {
     active_cell = active_cell.filter((item) => item !== cell);
 }
 
+// Helper function to undo the most recent action
 function undoAction(cell) {
     clearCell(cell);
     cell.classList.remove("invalid"); // Remove the "invalid" css class
     isValid = true; // Reset the validation flag
 }
 
+// Helper function to validate the input
 function validateSudoku(cell) {
     let value = cell.value;
     if (!/^\d$/.test(value) || isValid === false) {
@@ -174,7 +200,9 @@ function validateSudoku(cell) {
     }
 }
 
+// Helper function to check if the input follows Sudoku rules
 function checkSudoku(cell) { 
+    // Get the row, column, cube, and value of the cell
     let r = cell.row;
     let c = cell.col;
     let cubeIndex = cell.cube;
@@ -182,7 +210,6 @@ function checkSudoku(cell) {
     
     if (value) {
         // Check if the value already exists in the row, column, or cube
-        
         if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(cubes[cubeIndex]).includes(value)){
             isValid = false;
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
@@ -199,6 +226,7 @@ function checkSudoku(cell) {
     }
 }
 
+// Helper function to clear the Sudoku board
 function clearSudoku(grid) {
     // Reset the grid values and remove "invalid" css from all cells
     for (let r = 0; r < 9; r++) {
@@ -207,6 +235,8 @@ function clearSudoku(grid) {
             cell.value = "";  
             cell.classList.remove("invalid");  
             cell.classList.remove("selected");
+            cell.classList.remove(cell.color);
+            cell.color = null;
         }
     }
     // Re-initialize empty tracking arrays
