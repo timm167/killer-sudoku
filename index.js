@@ -1,10 +1,11 @@
 import {transparentColors} from './colors.js';
 
 // TODO
-// clicking on a box that's been picked fucks everything up. fix that.
 // ADD FUNCTIONALITY TO DELETE BOXES
+// Make it so that box cells must be adjacent
 // FIX UNDO TO NOT DELETE BOXES
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES
+// MAKE addCellToBox less ugly (max twice nested)
 
 document.addEventListener("DOMContentLoaded", function() {
     const gridElement = document.getElementById("grid");
@@ -15,28 +16,49 @@ document.addEventListener("DOMContentLoaded", function() {
         return Math.floor(row / 3) * 3 + Math.floor(col / 3);
     }
 
+    // Helper function to check if a cell is adjacent to at least one member in currentBox
+    function isAdjacent(cell) {
+        for (let i = 0; i < currentBox.length; i++) {
+            let boxCell = currentBox[i];
+            if ((cell.row === boxCell.row && (cell.col === boxCell.col + 1 || cell.col === boxCell.col - 1)) ||
+                (cell.col === boxCell.col && (cell.row === boxCell.row + 1 || cell.row === boxCell.row - 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Helper function to check if a cell is a valid addition to a box
+    function isValidBoxAddition(cell) {
+        if (!cells_with_box.includes(cell)) {
+            if (currentBox.length === 0) {
+                return true;
+            } else {
+                return isAdjacent(cell);
+            }
+        }
+        
+    }
     // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
     function addCellToBox(cell) {
-        if (addingBox  && !cells_with_box.includes(cell)) {
-            cell.classList.toggle("selected");
-            cell.selected = !cell.selected;
-            if (cell.selected) {
-                currentBox.push(cell);
+        if (isValidBoxAddition(cell)) {
+            if (addingBox) {
+                cell.classList.toggle("selected");
+                cell.selected = !cell.selected;
+                if (cell.selected) {
+                    currentBox.push(cell);
+                } else {
+                    currentBox = currentBox.filter((item) => item !== cell);
+                }
             } else {
-                currentBox = currentBox.filter((item) => item !== cell);
+                addingBox = false;
             }
-
-        } else {
-            addingBox = false;
         }
     }
 
     function colorBox(box) {
         let color = available_box_colors.pop();
         for (let i = 0; i < box.length; i++) {
-            console.log("coloring")
-            console.log(box[i])
-            console.log(color)
             box[i].classList.add(color);
             box[i].classList.remove("selected");
             box[i].color = color;
@@ -134,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 cell.actualValue = 0;
                 cell.inBox = null;
                 cell.color = null;
+                cell.value = cell.id;
                 cell.addEventListener("input", function() {
                     validateSudoku(cell)
                 });
@@ -169,7 +192,7 @@ let available_box_colors = transparentColors // Used to track the colors availab
 
 // Helper function to clear a cell
 function clearCell(cell) {
-    console.log(cell)
+    console.log(`clearing cell ${cell.id}`)
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
     cell.classList.remove(cell.color)
