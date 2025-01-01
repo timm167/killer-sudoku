@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
             cell.id = `${cell.row}/${cell.col}`
             cell.cube = getCubeIndex(r, c);
             cell.selected = false;
-            cell.actualValue = undefined;
+            cell.actualValue = 0;
+            cell.inBox = null;
             cell.addEventListener("input", function() {
                 validateSudoku(cell)
             });
@@ -55,11 +56,15 @@ document.addEventListener("DOMContentLoaded", function() {
         addingBox = !addingBox;
         document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
         if (!addingBox) {
+            let boxId = `box${boxCount++}`;
             let sumBox = 0;
             for (let i = 0; i < currentBox.length; i++) {
-                sumBox += parseInt(currentBox[i].value);
+                sumBox += currentBox[i].actualValue;
             }
-            boxes[currentBox] = sumBox;
+            boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+            for (let i = 0; i < currentBox.length; i++) {
+                currentBox[i].inBox = boxId;
+            }
             currentBox = [];
         }
 
@@ -99,6 +104,7 @@ let togglingSums = false;
 let addingBox = false;
 let boxes = {};
 let currentBox = [];
+let boxCount = 0;
 
 // Toggle the visibility of sum-related controls
 function toggleSums() {
@@ -113,12 +119,13 @@ function toggleSums() {
     }
 }
 
-
 // END OF KILLER SUDOKU FUNCTIONS
 
 // FUNCTIONS FOR ADDING SUDOKU FUNCTIONALITY
 function clearCell(cell) {
     cell.value = ""; // Clear the input 
+    cell.actualValue = 0;
+    boxes[cell.inBox]['sum'] -= cell.actualValue;
     rows[cell.row][cell.id] = ""; // Clear the tracking arrays
     cols[cell.col][cell.id] = "";
     cubes[cell.cube][cell.id] = "";
@@ -157,6 +164,10 @@ function checkSudoku(cell) {
             rows[r][cell.id] = value
             cols[c][cell.id] = value
             cubes[cubeIndex][cell.id] = value;
+            cell.actualValue = parseInt(value);
+            if (cell.inBox !== null) {
+                boxes[cell.inBox]['sum'] += cell.actualValue;
+            }
         }
     }
 }
