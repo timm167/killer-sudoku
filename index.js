@@ -57,11 +57,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function colorBox(box) {
-        let color = available_box_colors.pop();
+        let color = cellColors[colorIndex];
         for (let i = 0; i < box.length; i++) {
             box[i].classList.add(color);
             box[i].classList.remove("selected");
             box[i].color = color;
+            colorChange();
         }
     }
 
@@ -101,9 +102,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Helper function to set up event listeners for buttons
     function setupEventListeners() {
-        document.getElementById("showSum").addEventListener("click", function() {
-            console.log(boxes);
-        });
+        // document.getElementById("showSum").addEventListener("click", function() {
+        //     console.log(boxes);
+        // });
         document.getElementById("clearButton").addEventListener("click", function() {
             clearSudoku(grid);
         });
@@ -176,6 +177,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
+const colorView = document.getElementById("colorView")
+let buttonColor = 'white'
+let colorIndex = 0;
+let availableColors = [...transparentColors];
+
+function colorChange() {
+    if (availableColors.length === 0) {
+        availableColors = [...transparentColors];
+    }
+    colorView.classList.remove(buttonColor);
+    buttonColor = availableColors.pop()
+    colorIndex = availableColors.length;
+    colorView.classList.add(buttonColor);
+    colorView.textContent = buttonColor;
+}
+
+colorView.addEventListener("click", function() {
+    colorChange();
+})
+
 // Initializing state tracking
 let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for rows
 let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for columns
@@ -188,7 +209,7 @@ let boxes = {}; // Used to track the boxes, their cells, and their sums
 let currentBox = []; // Used to track the cells selected for a box
 let boxCount = 0; // Used to track the number of boxes created for indexing
 let cells_with_box = []; // Used to track cells that are part of a box
-let available_box_colors = transparentColors // Used to track the colors available for boxes
+const cellColors = [...transparentColors] // Used to track the colors available for boxes
 
 // Helper function to clear a cell
 function clearCell(cell) {
@@ -274,4 +295,9 @@ function clearSudoku(grid) {
     active_cell = [];   
     document.getElementById("numberButton").textContent = "Sum Boxes"
     document.getElementById("sumButtons").classList.add("hidden")
+    console.clear();
+    colorView.classList.remove(buttonColor);
+    colorView.textContent = "Pick a Color";
+    colorIndex = 0;
+    availableColors = transparentColors;
 }
