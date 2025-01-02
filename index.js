@@ -5,6 +5,7 @@ import {transparentColors} from './colors.js';
 // ADD FUNCTIONALITY TO DELETE BOXES
 // FIX UNDO TO NOT DELETE BOXES
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES
+// ADD SHORTCUT KEY ON LEFT SIDE 
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
@@ -42,7 +43,17 @@ function isValidBoxAddition(cell) {
             return isAdjacent(cell);
         }
     }
-    
+}
+
+function setBoxHoverAnimationOn() {
+    for (let i = 0; i < boxes.length; i++) {
+        let box = boxes[i];
+        for (let j = 0; j < box.cells.length; j++) {
+            let cell = box.cells[j];
+            
+        }
+
+    }
 }
 
 // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
@@ -93,10 +104,6 @@ function createBox() {
     }
 }
 
-function pickBox() {
-    
-}
-
 // Toggle the visibility of sum-related controls
 function toggleSums() {
     togglingSums = !togglingSums;
@@ -110,6 +117,26 @@ function toggleSums() {
     }
 }
 
+function deleteBox(cell) {
+    let box = boxes[cell.inBox];
+    for (let i = 0; i < box.cells.length; i++) {
+        let boxCell = box.cells[i];
+        boxCell.classList.remove(boxCell.color);
+        boxCell.inBox = null;
+        boxCell.color = null;
+        boxCell.actualValue = 0;
+        cells_with_box = cells_with_box.filter((item) => item !== boxCell);
+    }
+    delete boxes[cell.inBox];
+    resetDeleteBox();
+}
+
+function resetDeleteBox() {
+    document.getElementById("grid").classList.remove("selectBox")
+    delBoxButton.textContent = "Delete Box";
+    deletingBox = false;
+}
+
 // Helper function to set up event listeners for buttons
 function setupEventListeners() {
     // document.getElementById("showSum").addEventListener("click", function() {
@@ -119,15 +146,27 @@ function setupEventListeners() {
         clearSudoku(grid);
     });
     document.getElementById("undoButton").addEventListener("click", function() {
+        resetDeleteBox()
         undoAction((active_cell[active_cell.length - 1]))
     });
     document.getElementById("newBoxButton").addEventListener("click", function() {
+        resetDeleteBox();
         createBox();
     });
-    document.getElementById("delBoxButton").addEventListener("click", function() {
-        undoAction(active_cell[-1])
+    const delBoxButton = document.getElementById("delBoxButton");
+    delBoxButton.addEventListener("click", function() {
+        if (deletingBox) {
+            resetDeleteBox()
+        }
+        else if (!deletingBox) {
+            setBoxHoverAnimationOn();
+            document.getElementById("grid").classList.add("selectBox");
+            delBoxButton.textContent = "Select Box";
+            deletingBox = true;
+        }
     });
     document.getElementById("setBoxButton").addEventListener("click", function() {
+        resetDeleteBox();
         undoAction(active_cell[-1])
     });
 
@@ -135,6 +174,7 @@ function setupEventListeners() {
 
     // Toggle sums when the button is clicked
     numberToggler.addEventListener("click", function () {
+        resetDeleteBox();
         if (!isValid) {
             if (!togglingSums) {
                 alert("Please remove errors from the board before toggling the sums.");
@@ -172,8 +212,13 @@ function createSudokuGrid() {
                 validateSudoku(cell)
             });
             cell.addEventListener("click", function() {
-                selectedCell = cell;
-                addCellToBox(cell);
+                if (deletingBox && cell.inBox) {
+                    deleteBox(cell)
+                }
+                else {
+                    selectedCell = cell;
+                    addCellToBox(cell);
+            }
             });
             row.push(cell);
             gridElement.appendChild(cell);
@@ -216,6 +261,7 @@ let boxCount = 0; // Used to track the number of boxes created for indexing
 let cells_with_box = []; // Used to track cells that are part of a box
 let selectedCell = null; // Used to track the most recently selected cell
 const cellColors = [...transparentColors] // Used to track the colors available for boxes
+let deletingBox = false; // Used to track if the "Delete Box" button has been clicked
 
 // Helper function to clear a cell
 function clearCell(cell) {
@@ -361,9 +407,11 @@ document.addEventListener("keydown", function(e) {
     else if (e.key === "Enter") {
         e.preventDefault();
         if (togglingSums) {
-            console.log("Summing boxes")
             document.getElementById("newBoxButton").click();
         }
+    }
+    else if (e.key === "Shift"){
+        document.getElementById("numberButton").click();
     }
 })
 
