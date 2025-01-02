@@ -1,7 +1,5 @@
-import { updateGridFocus } from "./grid.js";
+import { createSudokuGrid, updateGridFocus } from "./grid.js";
 import { transparentColors } from "./colors.js";
-
-
 
 // Initial state
 const state = {
@@ -22,8 +20,8 @@ const state = {
     availableColors: [...transparentColors],
     cellColors: [...transparentColors],     // Used to track the colors available for boxes
     deletingBox: false,                     // Used to track if the "Delete Box" button has been clicked
-    deletedBoxes: []                        // Used to track deleted boxes
-
+    deletedBoxes: [],                        // Used to track deleted boxes
+    grid: createSudokuGrid()
 };
 
 // Functions to interact with state

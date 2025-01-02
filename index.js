@@ -1,19 +1,8 @@
 import {transparentColors} from './colors.js';
 import { state, setIsValid, setTogglingSums, setAddingBox, setSelectedCell} from './state.js';
 import {createSudokuGrid} from './grid.js';
-
-// TODO
-// ADD LOGIC (numeracy) FOR BOXES (could be 3+ hours)
-// ADD BOX ACTION UNDO SPECIFIC TO BOXES i.e. remove last cell added to current box
-// SPLIT THIS CODE INTO MULTIPLE FILES (1 hour)
-
-//TODO LATER
-// ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
-// ADD SOLVE PUZZLE FUNCTIONALITY IN PYTHON
-// ADD SAVE PUZZLE FUNCTIONALITY USING JSON
-// ADD LOAD PUZZLE FUNCTIONALITY USING JSON
-// ADD PLAY SUDOKU FUNCTIONALITY (not core to the project)
-// Maybe fix the animation for the boxes
+import { clearSudoku } from './utils.js';
+import { handleKeyInputs } from './keyboard.js';
 
 // Helper function to check if a cell is adjacent to at least one member in currentBox
 function isAdjacent(cell) {
@@ -312,69 +301,8 @@ function checkSudoku(cell) {
     }
 }
 
-// Helper function to clear the Sudoku board
-function clearSudoku() {
-    window.location.reload();
-}
-
-// GLOBAL EVENT LISTENERS
-
-// KEY INPUTS
-
-document.addEventListener("keydown", function(e) {
-    console.log(e.key)
-    if (isValid === false && togglingSums === false) {
-        document.getElementById("undoButton").click();
-    }
-    else if (e.key === "Backspace" && (e.ctrlKey || e.shiftKey)) {
-        document.getElementById("clearButton").click();
-    }
-    else if (e.key === "Backspace") {
-        document.getElementById("undoButton").click();
-    }
-    else if (e.key === "ArrowUp") {
-        let cell = selectedCell
-        let row = cell.row;
-        let col = cell.col;
-        let newRow = row === 0 ? 8 : row - 1;
-        selectedCell = grid[newRow][col];
-        selectedCell.focus();
-    }
-    else if (e.key === "ArrowDown") {
-        let cell = selectedCell
-        let row = cell.row;
-        let col = cell.col;
-        let newRow = row === 8 ? 0 : row + 1;
-        selectedCell = grid[newRow][col];
-        selectedCell.focus();
-    }
-    else if (e.key === "ArrowLeft") {
-        let cell = selectedCell
-        let row = cell.row;
-        let col = cell.col;
-        let newCol = col === 0 ? 8 : col - 1;
-        selectedCell = grid[row][newCol];
-        selectedCell.focus();
-    }
-
-    else if (e.key === "ArrowRight") {
-        let cell = selectedCell
-        let row = cell.row;
-        let col = cell.col;
-        let newCol = col === 8 ? 0 : col + 1;
-        selectedCell = grid[row][newCol];
-        selectedCell.focus();
-    } 
-    else if (e.key === "Enter") {
-        e.preventDefault();
-        if (togglingSums) {
-            document.getElementById("newBoxButton").click();
-        }
-    }
-    else if (e.key === "Shift"){
-        document.getElementById("numberButton").click();
-    }
-})
+// Adds the ability to navigate using the keyboard
+document.addEventListener("keydown", handleKeyInputs);
 
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize the Sudoku grid
