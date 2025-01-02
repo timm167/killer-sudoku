@@ -1,11 +1,17 @@
 import {transparentColors} from './colors.js';
 
 // TODO
+// ADD LOGIC FOR BOXES
 // ADD FUNCTIONALITY TO DELETE BOXES
-// Make it so that box cells must be adjacent
 // FIX UNDO TO NOT DELETE BOXES
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES
-// MAKE addCellToBox less ugly (max twice nested)
+
+//TODO LATER
+// ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
+// ADD SOLVE PUZZLE FUNCTIONALITY IN PYTHON
+// ADD SAVE PUZZLE FUNCTIONALITY USING JSON
+// ADD LOAD PUZZLE FUNCTIONALITY USING JSON
+// ADD PLAY SUDOKU FUNCTIONALITY (not core to the project)
 
 const gridElement = document.getElementById("grid");
 let grid = [];
