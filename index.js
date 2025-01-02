@@ -6,6 +6,7 @@ import {transparentColors} from './colors.js';
 // FIX UNDO TO NOT DELETE BOXES
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES
 // ADD SHORTCUT KEY ON LEFT SIDE 
+// FIX ANIMATION I AM TOO FUCKING TIRED
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
@@ -46,14 +47,19 @@ function isValidBoxAddition(cell) {
 }
 
 function setBoxHoverAnimationOn() {
-    for (let i = 0; i < boxes.length; i++) {
-        let box = boxes[i];
-        for (let j = 0; j < box.cells.length; j++) {
-            let cell = box.cells[j];
-            
-        }
-
-    }
+    // console.log(grid)
+    // for (let key in boxes) {
+    //     let box = boxes[key];
+    //     box.cells.forEach(cell => {
+    //         let row = cell.row;
+    //         let col = cell.col;
+    //         grid[row][col].addEventListener("mouseover", () => {
+    //             box.cells.forEach(c => {
+    //                 grid[c.row][c.col].classList.add("hover-box");
+    //             });
+    //         });
+    //     });
+    // }
 }
 
 // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
