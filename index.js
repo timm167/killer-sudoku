@@ -1,12 +1,11 @@
 import {transparentColors} from './colors.js';
 
 // TODO
-// ADD LOGIC FOR BOXES
-// ADD FUNCTIONALITY TO DELETE BOXES
-// FIX UNDO TO NOT DELETE BOXES
-// ADD BOX ACTION UNDO SPECIFIC TO BOXES
-// ADD SHORTCUT KEY ON LEFT SIDE 
-// FIX ANIMATION I AM TOO FUCKING TIRED
+// ADD LOGIC (numeracy) FOR BOXES (could be 3+ hours)
+// FIX UNDO TO NOT DELETE BOXES (Should not be too hard (30 minutes))
+// ADD BOX ACTION UNDO SPECIFIC TO BOXES i.e. remove last cell added to current box
+// ADD SHORTCUT KEY ON LEFT SIDE (5 minute task so do first thing after coffee)
+// FIX ANIMATION I AM TOO FUCKING TIRED (I can leave this if it's too fucked)
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
