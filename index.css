@@ -104,11 +104,16 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-  .cell:focus {
+  .cell-focus:focus {
     outline: none;
     background-color: rgb(118, 169, 214);
     border-color: rgb(70, 70, 209);
   }  
+
+  .cell:focus {
+    outline: none;
+    border-color: rgb(70, 70, 209);
+  }
 
   .invalid {
     background-color: salmon;
@@ -299,9 +304,6 @@ input[type="number"]::-webkit-inner-spin-button {
     display: none;
 }
 
-.hover-box {
-    background-color: red;
-}
 /* Colors */
 
 .red { background-color: rgba(255, 0, 0, 0.6); }
@@ -387,3 +389,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .ice-blue { background-color: rgba(215, 244, 255, 0.6); }
 .white-smoke { background-color: rgba(245, 245, 245, 0.6); }
 
+/* Hover Box */
+.hover-box {
+    background-color: red;
+}

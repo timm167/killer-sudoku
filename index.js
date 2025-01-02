@@ -2,10 +2,8 @@ import {transparentColors} from './colors.js';
 
 // TODO
 // ADD LOGIC (numeracy) FOR BOXES (could be 3+ hours)
-// FIX UNDO TO NOT DELETE BOXES (Should not be too hard (30 minutes))
 // ADD BOX ACTION UNDO SPECIFIC TO BOXES i.e. remove last cell added to current box
-// ADD SHORTCUT KEY ON LEFT SIDE (5 minute task so do first thing after coffee)
-// FIX ANIMATION I AM TOO FUCKING TIRED (I can leave this if it's too fucked)
+// SPLIT THIS CODE INTO MULTIPLE FILES (1 hour)
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON
@@ -13,6 +11,7 @@ import {transparentColors} from './colors.js';
 // ADD SAVE PUZZLE FUNCTIONALITY USING JSON
 // ADD LOAD PUZZLE FUNCTIONALITY USING JSON
 // ADD PLAY SUDOKU FUNCTIONALITY (not core to the project)
+// Maybe fix the animation for the boxes
 
 const gridElement = document.getElementById("grid");
 let grid = [];
@@ -21,7 +20,6 @@ let grid = [];
 function getCubeIndex(row, col) {
     return Math.floor(row / 3) * 3 + Math.floor(col / 3);
 }
-
 // Helper function to check if a cell is adjacent to at least one member in currentBox
 function isAdjacent(cell) {
     for (let i = 0; i < currentBox.length; i++) {
@@ -45,17 +43,29 @@ function isValidBoxAddition(cell) {
     }
 }
 
+function addHoverBox(box) {
+    box.cells.forEach(c => {
+        grid[c.row][c.col].classList.add("hover-box");
+    });
+}
+
+function removeHoverBox(box) {
+    box.cells.forEach(c => {
+        grid[c.row][c.col].classList.remove("hover-box");
+    });
+}
+
 function setBoxHoverAnimationOn() {
-    // console.log(grid)
     // for (let key in boxes) {
     //     let box = boxes[key];
     //     box.cells.forEach(cell => {
     //         let row = cell.row;
     //         let col = cell.col;
-    //         grid[row][col].addEventListener("mouseover", () => {
-    //             box.cells.forEach(c => {
-    //                 grid[c.row][c.col].classList.add("hover-box");
-    //             });
+    //         grid[row][col].addEventListener("mouseover", function() {
+    //             addHoverBox(box)
+    //     });
+    //         grid[row][col].addEventListener("mouseout", function(){
+    //             removeHoverBox(box)
     //         });
     //     });
     // }
@@ -109,6 +119,21 @@ function createBox() {
     }
 }
 
+function addBackDeletedBox() {
+    let boxId = `box${boxCount++}`;
+    let sumBox = 0;
+    colorBox(currentBox);
+    for (let i = 0; i < currentBox.length; i++) {
+        sumBox += currentBox[i].actualValue;
+        cells_with_box.push(currentBox[i]);
+    }
+    boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+    for (let i = 0; i < currentBox.length; i++) {
+        currentBox[i].inBox = boxId;
+    }
+    currentBox = [];
+}
+
 // Toggle the visibility of sum-related controls
 function toggleSums() {
     togglingSums = !togglingSums;
@@ -124,6 +149,7 @@ function toggleSums() {
 
 function deleteBox(cell) {
     let box = boxes[cell.inBox];
+    deletedBoxes.push(box);
     for (let i = 0; i < box.cells.length; i++) {
         let boxCell = box.cells[i];
         boxCell.classList.remove(boxCell.color);
@@ -140,6 +166,16 @@ function resetDeleteBox() {
     document.getElementById("grid").classList.remove("selectBox")
     delBoxButton.textContent = "Delete Box";
     deletingBox = false;
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            grid[r][c].removeEventListener("mouseover", function() {
+                addHoverBox(box);
+            });
+            grid[r][c].removeEventListener("mouseout", function() {
+                removeHoverBox(box);
+            });
+        }
+    }
 }
 
 // Helper function to set up event listeners for buttons
@@ -151,8 +187,13 @@ function setupEventListeners() {
         clearSudoku(grid);
     });
     document.getElementById("undoButton").addEventListener("click", function() {
-        resetDeleteBox()
+        if (togglingSums){
+            currentBox = deleteBox[currentBox.length - 1];
+            addBackDeletedBox();
+            return;
+        }
         undoAction((active_cell[active_cell.length - 1]))
+        resetDeleteBox()
     });
     document.getElementById("newBoxButton").addEventListener("click", function() {
         resetDeleteBox();
@@ -160,19 +201,22 @@ function setupEventListeners() {
     });
     const delBoxButton = document.getElementById("delBoxButton");
     delBoxButton.addEventListener("click", function() {
+        if (addingBox){
+            return;
+        }
         if (deletingBox) {
             resetDeleteBox()
         }
         else if (!deletingBox) {
             setBoxHoverAnimationOn();
             document.getElementById("grid").classList.add("selectBox");
-            delBoxButton.textContent = "Select Box";
+            delBoxButton.textContent = "Select a box";
             deletingBox = true;
         }
     });
+
     document.getElementById("setBoxButton").addEventListener("click", function() {
-        resetDeleteBox();
-        undoAction(active_cell[-1])
+        // resetDeleteBox();
     });
 
     const numberToggler = document.getElementById("numberButton");
@@ -205,6 +249,8 @@ function createSudokuGrid() {
             let cell = document.createElement("input");
             cell.type = "text";
             cell.classList.add("cell");
+            cell.classList.add("cell-focus")
+            cell.canFocus = true;
             cell.row = r;
             cell.col = c;
             cell.id = `${cell.row}/${cell.col}`
@@ -267,6 +313,25 @@ let cells_with_box = []; // Used to track cells that are part of a box
 let selectedCell = null; // Used to track the most recently selected cell
 const cellColors = [...transparentColors] // Used to track the colors available for boxes
 let deletingBox = false; // Used to track if the "Delete Box" button has been clicked
+let deletedBoxes = []; // Used to track deleted boxes
+
+setInterval(() => {
+    if (isValid){
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                grid[r][c].canFocus = true;
+                grid[r][c].classList.add("cell-focus");
+            }
+        }
+    } else if (!isValid) {
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                grid[r][c].canFocus = false;
+                grid[r][c].classList.remove("cell-focus");
+            }
+        }
+    }
+}, 100);
 
 // Helper function to clear a cell
 function clearCell(cell) {
