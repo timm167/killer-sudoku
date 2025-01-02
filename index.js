@@ -1,4 +1,6 @@
 import {transparentColors} from './colors.js';
+import { state, setIsValid, setTogglingSums, setAddingBox, setSelectedCell} from './state.js';
+import {createSudokuGrid} from './grid.js';
 
 // TODO
 // ADD LOGIC (numeracy) FOR BOXES (could be 3+ hours)
@@ -13,13 +15,6 @@ import {transparentColors} from './colors.js';
 // ADD PLAY SUDOKU FUNCTIONALITY (not core to the project)
 // Maybe fix the animation for the boxes
 
-const gridElement = document.getElementById("grid");
-let grid = [];
-
-// Helper function to get the cube index
-function getCubeIndex(row, col) {
-    return Math.floor(row / 3) * 3 + Math.floor(col / 3);
-}
 // Helper function to check if a cell is adjacent to at least one member in currentBox
 function isAdjacent(cell) {
     for (let i = 0; i < currentBox.length; i++) {
@@ -140,7 +135,7 @@ function toggleSums() {
     const sumButtons = document.getElementById("sumButtons");
 
     if (togglingSums) {
-        isValid = false; // Disable Sudoku validation while summing
+        setIsValid(false)// Disable Sudoku validation while summing
         sumButtons.classList.remove("hidden");
     } else {
         sumButtons.classList.add("hidden");
@@ -184,7 +179,7 @@ function setupEventListeners() {
     //     console.log(boxes);
     // });
     document.getElementById("clearButton").addEventListener("click", function() {
-        clearSudoku(grid);
+        clearSudoku();
     });
     document.getElementById("undoButton").addEventListener("click", function() {
         if (togglingSums){
@@ -229,7 +224,7 @@ function setupEventListeners() {
                 alert("Please remove errors from the board before toggling the sums.");
                 return;
             }
-            isValid = true;
+            setIsValid(true);
         }
 
         toggleSums();
@@ -240,49 +235,7 @@ function setupEventListeners() {
     });
 }
 
-// Create the Sudoku grid
-// Initializes each cell with the necessary properties and event listeners
-function createSudokuGrid() {
-    for (let r = 0; r < 9; r++) {
-        let row = [];
-        for (let c = 0; c < 9; c++) {
-            let cell = document.createElement("input");
-            cell.type = "text";
-            cell.classList.add("cell");
-            cell.classList.add("cell-focus")
-            cell.canFocus = true;
-            cell.row = r;
-            cell.col = c;
-            cell.id = `${cell.row}/${cell.col}`
-            cell.cube = getCubeIndex(r, c);
-            cell.selected = false;
-            cell.actualValue = 0;
-            cell.inBox = null;
-            cell.color = null;
-            cell.addEventListener("input", function() {
-                validateSudoku(cell)
-            });
-            cell.addEventListener("click", function() {
-                if (deletingBox && cell.inBox) {
-                    deleteBox(cell)
-                }
-                else {
-                    selectedCell = cell;
-                    addCellToBox(cell);
-            }
-            });
-            row.push(cell);
-            gridElement.appendChild(cell);
-        }
-        grid.push(row);
-    };
-};
-
-
 const colorView = document.getElementById("colorView")
-let buttonColor = 'white'
-let colorIndex = 0;
-let availableColors = [...transparentColors];
 
 function colorChange() {
     if (availableColors.length === 0) {
@@ -298,40 +251,7 @@ colorView.addEventListener("click", function() {
     colorChange();
 })
 
-// Initializing state tracking
-let rows = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for rows
-let cols = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for columns
-let cubes = Array(9).fill().map(() => ({})); // Initialize empty tracking arrays for 3x3 cubes
-let active_cell = []; // Used to track the most recently edited cell for undo
-let isValid = true; // Used to track if an input is valid and halts activity. Also used to halt activity when toggling sums.
-let togglingSums = false; // Used to track if the sums are being toggled (i.e. if the "Sum Boxes" button has been clicked)
-let addingBox = false; // Used to track if the "Place Box" button has been clicked so user can select cells to add to a box
-let boxes = {}; // Used to track the boxes, their cells, and their sums
-let currentBox = []; // Used to track the cells selected for a box
-let boxCount = 0; // Used to track the number of boxes created for indexing
-let cells_with_box = []; // Used to track cells that are part of a box
-let selectedCell = null; // Used to track the most recently selected cell
-const cellColors = [...transparentColors] // Used to track the colors available for boxes
-let deletingBox = false; // Used to track if the "Delete Box" button has been clicked
-let deletedBoxes = []; // Used to track deleted boxes
 
-setInterval(() => {
-    if (isValid){
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
-                grid[r][c].canFocus = true;
-                grid[r][c].classList.add("cell-focus");
-            }
-        }
-    } else if (!isValid) {
-        for (let r = 0; r < 9; r++) {
-            for (let c = 0; c < 9; c++) {
-                grid[r][c].canFocus = false;
-                grid[r][c].classList.remove("cell-focus");
-            }
-        }
-    }
-}, 100);
 
 // Helper function to clear a cell
 function clearCell(cell) {
@@ -352,7 +272,7 @@ function clearCell(cell) {
 function undoAction(cell) {
     clearCell(cell);
     cell.classList.remove("invalid"); // Remove the "invalid" css class
-    isValid = true; // Reset the validation flag
+    setIsValid(true) // Reset the validation flag
 }
 
 // Helper function to validate the input
@@ -377,7 +297,7 @@ function checkSudoku(cell) {
     if (value) {
         // Check if the value already exists in the row, column, or cube
         if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(cubes[cubeIndex]).includes(value)){
-            isValid = false;
+            setIsValid(false); // Mark the input as invalid
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
         } else {
             // Update the tracking arrays with the new value
@@ -393,38 +313,8 @@ function checkSudoku(cell) {
 }
 
 // Helper function to clear the Sudoku board
-function clearSudoku(grid) {
-    // Reset the grid values and remove "invalid" css from all cells
+function clearSudoku() {
     window.location.reload();
-    // for (let r = 0; r < 9; r++) {
-    //     for (let c = 0; c < 9; c++) {
-    //         let cell = grid[r][c];
-    //         cell.value = "";  
-    //         cell.classList.remove("invalid");  
-    //         cell.classList.remove("selected");
-    //         cell.classList.remove(cell.color);
-    //         cell.color = null;
-    //     }
-    // }
-    // // Re-initialize empty tracking arrays
-    // rows = Array(9).fill().map(() => ({}));
-    // cols = Array(9).fill().map(() => ({}));
-    // cubes = Array(9).fill().map(() => ({}));
-    // isValid = true; // Reset the validation flag
-    // togglingSums = false; // Reset the toggling flag
-    // currentBox = [];
-    // boxes = {};
-    // cells_with_box = [];
-    // active_cell = [];   
-    // document.getElementById("numberButton").textContent = "Killer Mode";
-    // document.getElementById("sumButtons").classList.add("hidden")
-    // document.getElementById("numberButton").classList.remove("active");
-    // console.clear();
-    // colorView.classList.remove(buttonColor);
-    // colorView.textContent = "Toggle Color";
-    // colorIndex = 0;
-    // availableColors = transparentColors;
-
 }
 
 // GLOBAL EVENT LISTENERS
@@ -466,6 +356,7 @@ document.addEventListener("keydown", function(e) {
         selectedCell = grid[row][newCol];
         selectedCell.focus();
     }
+
     else if (e.key === "ArrowRight") {
         let cell = selectedCell
         let row = cell.row;
@@ -484,7 +375,6 @@ document.addEventListener("keydown", function(e) {
         document.getElementById("numberButton").click();
     }
 })
-
 
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize the Sudoku grid
