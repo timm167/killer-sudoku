@@ -44,6 +44,7 @@ function isValidBoxAddition(cell) {
     }
     
 }
+
 // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
 function addCellToBox(cell) {
     if (isValidBoxAddition(cell)) {
@@ -90,6 +91,10 @@ function createBox() {
         }
         currentBox = [];
     }
+}
+
+function pickBox() {
+    
 }
 
 // Toggle the visibility of sum-related controls
@@ -142,6 +147,7 @@ function setupEventListeners() {
 
         // Update button text based on the state
         numberToggler.textContent = togglingSums ? "Exit Killer" : "Killer Mode";
+        numberToggler.classList.toggle("active");
     });
 }
 
@@ -273,33 +279,36 @@ function checkSudoku(cell) {
 // Helper function to clear the Sudoku board
 function clearSudoku(grid) {
     // Reset the grid values and remove "invalid" css from all cells
-    for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-            let cell = grid[r][c];
-            cell.value = "";  
-            cell.classList.remove("invalid");  
-            cell.classList.remove("selected");
-            cell.classList.remove(cell.color);
-            cell.color = null;
-        }
-    }
-    // Re-initialize empty tracking arrays
-    rows = Array(9).fill().map(() => ({}));
-    cols = Array(9).fill().map(() => ({}));
-    cubes = Array(9).fill().map(() => ({}));
-    isValid = true; // Reset the validation flag
-    togglingSums = false; // Reset the toggling flag
-    currentBox = [];
-    boxes = {};
-    cells_with_box = [];
-    active_cell = [];   
-    document.getElementById("numberButton").textContent = "Killer Mode";
-    document.getElementById("sumButtons").classList.add("hidden")
-    console.clear();
-    colorView.classList.remove(buttonColor);
-    colorView.textContent = "Toggle Color";
-    colorIndex = 0;
-    availableColors = transparentColors;
+    window.location.reload();
+    // for (let r = 0; r < 9; r++) {
+    //     for (let c = 0; c < 9; c++) {
+    //         let cell = grid[r][c];
+    //         cell.value = "";  
+    //         cell.classList.remove("invalid");  
+    //         cell.classList.remove("selected");
+    //         cell.classList.remove(cell.color);
+    //         cell.color = null;
+    //     }
+    // }
+    // // Re-initialize empty tracking arrays
+    // rows = Array(9).fill().map(() => ({}));
+    // cols = Array(9).fill().map(() => ({}));
+    // cubes = Array(9).fill().map(() => ({}));
+    // isValid = true; // Reset the validation flag
+    // togglingSums = false; // Reset the toggling flag
+    // currentBox = [];
+    // boxes = {};
+    // cells_with_box = [];
+    // active_cell = [];   
+    // document.getElementById("numberButton").textContent = "Killer Mode";
+    // document.getElementById("sumButtons").classList.add("hidden")
+    // document.getElementById("numberButton").classList.remove("active");
+    // console.clear();
+    // colorView.classList.remove(buttonColor);
+    // colorView.textContent = "Toggle Color";
+    // colorIndex = 0;
+    // availableColors = transparentColors;
+
 }
 
 // GLOBAL EVENT LISTENERS
@@ -348,6 +357,13 @@ document.addEventListener("keydown", function(e) {
         let newCol = col === 8 ? 0 : col + 1;
         selectedCell = grid[row][newCol];
         selectedCell.focus();
+    } 
+    else if (e.key === "Enter") {
+        e.preventDefault();
+        if (togglingSums) {
+            console.log("Summing boxes")
+            document.getElementById("newBoxButton").click();
+        }
     }
 })
 

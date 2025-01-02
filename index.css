@@ -5,6 +5,10 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+span {
+    font-size: 10px;
+}
 .check-solve .button {
     width: 200px;
     padding: 15px 25px;
@@ -56,12 +60,6 @@ body {
     border-radius: 10px;
     border: 1px solid black;
     margin: 10px;
-}
-
-
-#numberButton {
-    background-color: rgb(201, 78, 78);
-    border: 1px solid black;
 }
 
 .grid {
@@ -159,6 +157,112 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: center;
     width: 100%;
 }
+
+
+
+/* Specific Button Designs */
+/* Specific Button Designs */
+
+#colorView:hover {
+    box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
+    transform: scale(1.01)
+}
+
+.numberButton {
+    background-color: rgb(212, 149, 149);
+    color: rgb(70, 21, 21);
+    border: 1px solid rgb(70, 21, 21);
+    box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
+    transform: scale(1.01)
+}
+
+.numberButton:hover {
+    background-color: rgb(198, 133, 133);
+}
+
+.active {
+    background-color: rgb(195, 243, 228);
+    border-color: #1b251e;
+    color:#1b251e;
+}
+
+.active:hover {
+    background-color: rgb(133, 198, 178);
+}
+
+#undoButton {
+    background-color: #e9e5d3;
+    color: #333333;
+}
+
+#undoButton:hover {
+    background-color: #f1be8b;
+}
+
+#Save {
+    background-color: #bde2dd;
+    color: #333333;
+}
+
+#Save:hover {
+    background-color:#8ec9ca;
+}
+
+#clearButton {
+    background-color: #f8c7c1;
+    color: #333333;
+}
+
+#clearButton:hover {
+    background-color: #f28c87;
+}
+
+
+#checkButton {
+    background-color: #b2dfdb;
+    color: #333333;
+}
+
+#checkButton:hover {
+    background-color: #80cbc4;
+}
+
+#solveButton {
+    background-color: #b3cde0;
+    color: #333333;
+}
+
+#solveButton:hover {
+    background-color: #9ebad1;
+}
+
+#delBoxButton {
+    background-color: #d1c4e9;
+    color: #333333;
+}
+
+#delBoxButton:hover {
+    background-color: #b39ddb;
+}
+
+#setBoxButton {
+    background-color: #c5cae9;
+    color: #333333;
+}
+
+#setBoxButton:hover {
+    background-color: #9fa8da;
+}
+
+#newBoxButton {
+    background-color: #ffccbc;
+    color: #333333;
+}
+
+#newBoxButton:hover {
+    background-color: #ffab91;
+}
+
 
 /* media */
 
