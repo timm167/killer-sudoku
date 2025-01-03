@@ -4,7 +4,6 @@ import { setUpButtons } from './buttons.js';
 
 // TODO
 // CHECK PUZZLE SHOULD CHECK IF PUZZLE
-// if box is full then sum must be equal to declared sum
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON

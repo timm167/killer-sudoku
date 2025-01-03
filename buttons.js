@@ -2,6 +2,7 @@ import { state, setIsValid } from "./state.js";
 import {clearSudoku, toggleSums, undoAction} from "./utils.js";
 import {resetDeleteBox, addBackDeletedBox, deleteBox, createBox} from "./box.js";
 import {setBoxHoverAnimationOn} from "./animation.js";
+import {handleSolveButtonClick} from "./fetch.js";
 
 const { togglingSums, deletingBox, currentBox, active_cell } = state;
 
@@ -63,7 +64,7 @@ export function setUpButtons() {
     });
 
     const killerToggler = document.getElementById("killerButton");
-    
+
     // Toggle sums when the button is clicked
     killerToggler.addEventListener("click", function () {
         resetDeleteBox();
@@ -79,5 +80,9 @@ export function setUpButtons() {
         // Update button text based on the state
         killerToggler.textContent = state.togglingSums ? "Exit Killer" : "Killer Mode";
         killerToggler.classList.toggle("active");
+    });
+
+    document.getElementById("solveButton").addEventListener("click", function() {
+        handleSolveButtonClick();
     });
 }
