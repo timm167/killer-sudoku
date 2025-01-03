@@ -1,4 +1,4 @@
-import { createSudokuGrid, updateGridFocus } from "./grid.js";
+import { updateGridFocus } from "./grid.js";
 import { transparentColors } from "./colors.js";
 
 // Initial state
@@ -17,11 +17,11 @@ const state = {
     boxCount: 0,                            // Used to track the number of boxes created
     cells_with_box: [],                     // Used to track cells that are part of a box
     selectedCell: null,                     // Used to track the most recently selected cell
-    availableColors: [...transparentColors],
-    cellColors: [...transparentColors],     // Used to track the colors available for boxes
+    availableColors: [...transparentColors],  // Used to track the colors available for boxes
+    cellColors: [...transparentColors],    
     deletingBox: false,                     // Used to track if the "Delete Box" button has been clicked
     deletedBoxes: [],                        // Used to track deleted boxes
-    grid: createSudokuGrid()
+    grid: []
 };
 
 // Functions to interact with state
@@ -47,6 +47,10 @@ function setSelectedCell(cell) {
     state.selectedCell = cell;
 }
 
+function setDeletingBox(isDeleting) {
+    state.deletingBox = isDeleting;
+}
+
 function getState() {
     return state;
 }   
@@ -57,5 +61,6 @@ export {
     setTogglingSums, 
     setAddingBox, 
     setSelectedCell, 
-    getState 
+    getState, 
+    setDeletingBox,
 };

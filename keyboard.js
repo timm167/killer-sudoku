@@ -1,4 +1,6 @@
-import { state } from './state.js';
+import { state, setSelectedCell } from './state.js';
+
+const { grid, selectedCell } = state;
 
 // Listen for key inputs
 export function handleKeyInputs(e) {
@@ -36,7 +38,6 @@ export function handleKeyInputs(e) {
 
 // Just navigates the grid based on the direction
 function navigateGrid(direction) {
-    const { grid, selectedCell } = state;
     let cell = selectedCell;
     let row = cell.row;
     let col = cell.col;
@@ -58,6 +59,6 @@ function navigateGrid(direction) {
             break;
     }
 
-    selectedCell = grid[newRow][newCol];
+    setSelectedCell(grid[newRow][newCol]);
     selectedCell.focus();
 }

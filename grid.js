@@ -1,6 +1,10 @@
 // grid.js
-import { state } from './state.js';
+import { state, setSelectedCell } from './state.js';
 import { getCubeIndex } from './utils.js';
+import { validateSudoku } from './sudoku.js';
+import { addCellToBox, deleteBox } from './box.js';
+
+const { deletingBox } = state;
 
 const gridElement = document.getElementById("grid");
 let grid = [];
@@ -29,7 +33,7 @@ function createSudokuGrid() {
                 if (deletingBox && cell.inBox) {
                     deleteBox(cell);
                 } else {
-                    selectedCell = cell;
+                    setSelectedCell(cell);
                     addCellToBox(cell);
                 }
             });
