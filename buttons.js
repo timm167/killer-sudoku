@@ -16,7 +16,7 @@ export function setUpButtons() {
             addBackDeletedBox();
             return;
         }
-        undoAction((state.active_cell[active_cell.length - 1]))
+        undoAction((state.active_cell[state.active_cell.length - 1]))
         resetDeleteBox()
     });
 
@@ -49,6 +49,11 @@ export function setUpButtons() {
         if (deletingBox) {
             resetDeleteBox()
         }
+        if (state.settingBoxTotal) {
+            state.settingBoxTotal = false;
+            document.getElementById("grid").classList.remove("selectBox");
+            document.getElementById("setBoxButton").textContent = "Set Box Total";
+        }
         else {
         document.getElementById("grid").classList.add("selectBox");
         document.getElementById("setBoxButton").textContent = "Select a box";
@@ -58,7 +63,7 @@ export function setUpButtons() {
     });
 
     const killerToggler = document.getElementById("killerButton");
-
+    
     // Toggle sums when the button is clicked
     killerToggler.addEventListener("click", function () {
         resetDeleteBox();

@@ -15,6 +15,7 @@ function createSudokuGrid() {
 
             let cell = document.createElement("input");
             cell.type = "text";
+            cell.autocomplete = "off";
             cell.classList.add("cell");
             cell.classList.add("cell-focus");
             cell.canFocus = true;
@@ -55,7 +56,7 @@ function createSudokuGrid() {
             cellContainer.appendChild(span); // The span goes second
 
             // Append the container to the grid
-            row.push(cellContainer);
+            row.push(cell);
             gridElement.appendChild(cellContainer);  
         }
         state.grid.push(row);

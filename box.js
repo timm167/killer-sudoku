@@ -115,8 +115,15 @@ function setBoxTotal(cell) {
         alert("Please enter a valid number.");
         return;
     }
+
+    if ((state.boxes[cell.inBox]['cells'].every(cell => cell.actualValue !== 0)) && (newDeclaredTotal !== state.boxes[cell.inBox]['sum'])) {
+        alert("If the box is full, the declared total must be the sum of the numbers in the box.");
+        return;
+    }
+
     if (newDeclaredTotal < cell.inBox['sum']) {
         alert("The declared total cannot be less than the sum of numbers already in the box.");
+        return;
     }
     state.boxes[cell.inBox]['declaredTotal'] = newDeclaredTotal;
     console.log("boxes", state.boxes);

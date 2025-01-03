@@ -59,6 +59,6 @@ function navigateGrid(direction) {
             break;
     }
 
-    setSelectedCell(grid[newRow][newCol]);
+    setSelectedCell(state.grid[newRow][newCol]);
     state.selectedCell.focus();
 }

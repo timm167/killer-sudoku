@@ -3,8 +3,8 @@ import { handleKeyInputs } from './keyboard.js';
 import { setUpButtons } from './buttons.js';
 
 // TODO
-// ADD SET BOX TOTAL FUNCTIONALITY
 // CHECK PUZZLE SHOULD CHECK IF PUZZLE
+// if box is full then sum must be equal to declared sum
 
 //TODO LATER
 // ADD CHECK PUZZLE FUNCTIONALITY IN PYTHON

@@ -17,8 +17,10 @@ function checkSudoku(cell) {
         if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(cubes[cubeIndex]).includes(value)){
             setIsValid(false); // Mark the input as invalid
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
-        } else if (1===2) {
-            setIsValid(false); // Mark the input as valid
+        } 
+        else if (cell.inBox && (state.boxes[cell.inBox]['declaredTotal'] !== 0) && ((parseInt(state.boxes[cell.inBox]['sum']) + parseInt(value)) > state.boxes[cell.inBox]['declaredTotal'])) {
+            setIsValid(false); // Mark the input as invalid
+            cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
         }
         else {
             // Update the tracking arrays with the new value
@@ -33,12 +35,41 @@ function checkSudoku(cell) {
     }
 }
 
+// Helper function to validate the input 
+function boxFullAndNotEqual(cell){
+    let counter = 0;
+    for (let i in state.boxes[cell.inBox]['cells']) {
+        if (state.boxes[cell.inBox]['cells'][i].actualValue !== 0) {
+            counter++;
+        }
+    }
+    counter++;
+    if (counter !== state.boxes[cell.inBox]['cells'].length) {
+        console.log("counter", counter);
+        return false;
+    }
+
+    if ((parseInt(state.boxes[cell.inBox]['sum']) + parseInt(cell.value) === state.boxes[cell.inBox]['declaredTotal'])) {
+        console.log("sum", state.boxes[cell.inBox]['sum']);
+        return false;
+    }
+
+        return true;
+    }
+
+
+
 // Helper function to validate the input
 function validateSudoku(cell) {
     let value = cell.value;
+    console.log("validating sudoku");
+    console.log("cell.inBox", cell.inBox);
+    console.log(boxFullAndNotEqual(cell));
     if (!/^\d$/.test(value) || state.isValid === false) {
-        console.log(`invalid input is causing the cell ${cell.id} to be cleared`)
         clearCell(cell);
+    } else if (cell.inBox && boxFullAndNotEqual(cell)) { 
+            alert("If the box is full, the declared total must be the sum of the numbers in the box.");
+            clearCell(cell);
     } else {
         state.active_cell.push(cell);
         checkSudoku(cell);
