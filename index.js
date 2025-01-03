@@ -2,8 +2,8 @@ import {createSudokuGrid} from './grid.js';
 import { handleKeyInputs } from './keyboard.js';
 import { setUpButtons } from './buttons.js';
 
-
 // TODO
+// ADD SET BOX TOTAL FUNCTIONALITY
 // CHECK PUZZLE SHOULD CHECK IF PUZZLE
 
 //TODO LATER

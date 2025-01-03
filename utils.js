@@ -68,7 +68,6 @@ function clearCell(cell) {
 function toggleSums() {
     setTogglingSums(!state.togglingSums);
     const sumButtons = document.getElementById("sumButtons");
-    console.log("Toggling sums: " + state.togglingSums);
     if (state.togglingSums) {
         setIsValid(false)// Disable Sudoku validation while summing
         sumButtons.classList.remove("hidden");

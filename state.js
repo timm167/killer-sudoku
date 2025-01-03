@@ -23,6 +23,7 @@ const state = {
     deletedBoxes: [],                        // Used to track deleted boxes
     grid: [],
     isButtonDisabled: false,
+    settingBoxTotal: false, 
 };
 
 // Functions to interact with state

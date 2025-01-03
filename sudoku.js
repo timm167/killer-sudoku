@@ -17,7 +17,10 @@ function checkSudoku(cell) {
         if (Object.values(rows[r]).includes(value) || Object.values(cols[c]).includes(value) || Object.values(cubes[cubeIndex]).includes(value)){
             setIsValid(false); // Mark the input as invalid
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
-        } else {
+        } else if (1===2) {
+            setIsValid(false); // Mark the input as valid
+        }
+        else {
             // Update the tracking arrays with the new value
             state.rows[r][cell.id] = value
             state.cols[c][cell.id] = value

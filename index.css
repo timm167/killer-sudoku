@@ -71,16 +71,15 @@ span {
     display: grid;
     grid-template-columns: repeat(9, 40px);
     grid-template-rows: repeat(9, 40px); /* 9 rows */
-    border: 1px solid #000;
     width: fit-content;
   }
+
 
   .cell {
     width: 40px;
     height: 40px;
     font-size: 20px;
     text-align: center;
-    border: 1px solid #ccc;
     background-color: white;
     box-sizing: border-box;
     display: flex;
@@ -88,7 +87,17 @@ span {
     justify-content: center;
     cursor: pointer;
     caret-color: transparent;
+    padding: 0px;
+    border: none;
   }
+
+  .cell-container {
+    border: 1px solid #b1b2b8;
+    width: 40px;
+    height: 40px;
+    position: relative;
+  }
+
 
   .flex-sum {
     display: flex;
@@ -97,6 +106,18 @@ span {
     justify-content: space-around;
     width: 100%;
   }
+
+  .box-total-note {
+    left: 3px;
+    top: 3px;
+    font-size: 10px;
+    color: rgb(0, 0, 0);
+    pointer-events: none;
+    z-index: 1;
+    width: auto;
+    position: absolute;
+}
+
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -127,28 +148,28 @@ input[type="number"]::-webkit-inner-spin-button {
 
 
   /* Add thicker borders to separate 3x3 boxes */
-.cell:nth-child(3n+1) {
-    border-left: 1px solid #000;
+.cell-container:nth-child(3n+1) {
+    border-left: 2px solid #000;
 }
 
-.cell:nth-child(3n+3) {
-    border-right: 1px solid #000;
+.cell-container:nth-child(3n+3) {
+    border-right: 2px solid #000;
 }
 
-.cell:nth-child(3n) {
-    border-right: 1px solid #000;
+.cell.container:nth-child(3n) {
+    border-right: 2px solid #000;
 }
 
-.cell:nth-child(n+1):nth-child(-n+9),
-.cell:nth-child(n+28):nth-child(-n+36),
-.cell:nth-child(n+55):nth-child(-n+63) {
-    border-top: 1px solid #000;
+.cell-container:nth-child(n+1):nth-child(-n+9),
+.cell-container:nth-child(n+28):nth-child(-n+36),
+.cell-container:nth-child(n+55):nth-child(-n+63) {
+    border-top: 2px solid #000;
 }
 
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54),
-.cell:nth-child(n+73):nth-child(-n+81) {
-    border-bottom: 1px solid #000;
+.cell-container:nth-child(n+19):nth-child(-n+27),
+.cell-container:nth-child(n+46):nth-child(-n+54),
+.cell-container:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: 2px solid #000;
 }
 
 
@@ -303,6 +324,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .hidden {
     display: none;
 }
+
 
 /* Colors */
 

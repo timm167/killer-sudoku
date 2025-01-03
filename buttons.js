@@ -43,7 +43,18 @@ export function setUpButtons() {
     });
 
     document.getElementById("setBoxButton").addEventListener("click", function() {
-        // resetDeleteBox();
+        if (state.addingBox){
+            return;
+        }
+        if (deletingBox) {
+            resetDeleteBox()
+        }
+        else {
+        document.getElementById("grid").classList.add("selectBox");
+        document.getElementById("setBoxButton").textContent = "Select a box";
+        state.settingBoxTotal = true;
+        }
+
     });
 
     const killerToggler = document.getElementById("killerButton");

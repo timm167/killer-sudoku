@@ -2,9 +2,7 @@
 import { state, setSelectedCell } from './state.js';
 import { getCubeIndex, undoAction } from './utils.js';
 import { validateSudoku } from './sudoku.js';
-import { addCellToBox, deleteBox } from './box.js';
-
-const { deletingBox } = state;
+import { addCellToBox, deleteBox, setBoxTotal } from './box.js';
 
 const gridElement = document.getElementById("grid");
 
@@ -12,6 +10,9 @@ function createSudokuGrid() {
     for (let r = 0; r < 9; r++) {
         let row = [];
         for (let c = 0; c < 9; c++) {
+            let cellContainer = document.createElement('div');
+            cellContainer.classList.add('cell-container');
+
             let cell = document.createElement("input");
             cell.type = "text";
             cell.classList.add("cell");
@@ -35,13 +36,27 @@ function createSudokuGrid() {
             cell.addEventListener("click", function() {
                 if (state.deletingBox && cell.inBox) {
                     deleteBox(cell);
-                } else {
+                }
+                else if (state.settingBoxTotal && cell.inBox) {
+                    setBoxTotal(cell)
+
+                }
+                 else {
                     setSelectedCell(cell);
                     state.togglingSums && addCellToBox(cell);
                 }
             });
-            row.push(cell);
-            gridElement.appendChild(cell);
+            let span = document.createElement('span');
+            span.classList.add('box-total-note');  
+            span.textContent = '';
+
+            // Append the input and span to the container
+            cellContainer.appendChild(cell); // The input goes first
+            cellContainer.appendChild(span); // The span goes second
+
+            // Append the container to the grid
+            row.push(cellContainer);
+            gridElement.appendChild(cellContainer);  
         }
         state.grid.push(row);
     };

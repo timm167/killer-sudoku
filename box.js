@@ -2,7 +2,7 @@ import { state, setAddingBox, setDeletingBox } from './state.js';
 import { colorChange, isAdjacent } from './utils.js';
 // import { addHoverBox, removeHoverBox } from './animation.js';
 
-const {cellColors, colorIndex, boxes, currentBox } = state;
+const {boxes, currentBox } = state;
 
 function colorBox(box) {
     colorChange();
@@ -37,7 +37,6 @@ function createBox() {
     setAddingBox(!state.addingBox)
     document.getElementById("newBoxButton").textContent = state.addingBox ? "Place Box" : "New Box";
     if (!state.addingBox) {
-        console.log("Creating box");
         let boxId = `box${state.boxCount++}`;
         let sumBox = 0;
         colorBox(state.currentBox);
@@ -45,7 +44,7 @@ function createBox() {
             sumBox += state.currentBox[i].actualValue;
             state.cells_with_box.push(state.currentBox[i]);
         }
-        state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox }
+        state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox, 'declaredTotal': sumBox }
         for (let i = 0; i < currentBox.length; i++) {
             state.currentBox[i].inBox = boxId;
         }
@@ -110,4 +109,21 @@ function isValidBoxAddition(cell) {
     }
 }
 
-export { createBox, deleteBox, resetDeleteBox, addCellToBox, addBackDeletedBox };
+function setBoxTotal(cell) {
+    let newDeclaredTotal = parseInt(prompt("Enter the new declared total for the box:"), 10);
+    if (isNaN(newDeclaredTotal)) {
+        alert("Please enter a valid number.");
+        return;
+    }
+    if (newDeclaredTotal < cell.inBox['sum']) {
+        alert("The declared total cannot be less than the sum of numbers already in the box.");
+    }
+    state.boxes[cell.inBox]['declaredTotal'] = newDeclaredTotal;
+    console.log("boxes", state.boxes);
+    let cellContainer = cell.parentElement;
+    let span = cellContainer.querySelector('.box-total-note');
+    span.textContent = newDeclaredTotal;
+    state.settingBoxTotal = false;
+}
+
+export { createBox, deleteBox, resetDeleteBox, addCellToBox, addBackDeletedBox, setBoxTotal };
