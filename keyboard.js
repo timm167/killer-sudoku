@@ -38,7 +38,7 @@ export function handleKeyInputs(e) {
 
 // Just navigates the grid based on the direction
 function navigateGrid(direction) {
-    let cell = selectedCell;
+    let cell = state.selectedCell;
     let row = cell.row;
     let col = cell.col;
     let newRow = row;
@@ -60,5 +60,5 @@ function navigateGrid(direction) {
     }
 
     setSelectedCell(grid[newRow][newCol]);
-    selectedCell.focus();
+    state.selectedCell.focus();
 }

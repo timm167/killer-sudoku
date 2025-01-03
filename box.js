@@ -1,8 +1,8 @@
 import { state, setAddingBox, setDeletingBox } from './state.js';
-import { colorChange } from './utils.js';
-import { addHoverBox, removeHoverBox } from './animation.js';
+import { colorChange, isAdjacent } from './utils.js';
+// import { addHoverBox, removeHoverBox } from './animation.js';
 
-const {cellColors, colorIndex, grid, cells_with_box, boxes, deletedBoxes, addingBox, currentBox, deletingBox} = state;
+const {cellColors, colorIndex, cells_with_box, boxes, deletedBoxes, addingBox, currentBox } = state;
 
 function colorBox(box) {
     let color = cellColors[colorIndex];
@@ -17,13 +17,13 @@ function colorBox(box) {
 // Helper function to add a cell to a box when selected. Works when addingBox is true as toggled within createBox()
 function addCellToBox(cell) {
     if (isValidBoxAddition(cell)) {
-        if (addingBox) {
+        if (state.addingBox) {
             cell.classList.toggle("selected");
             cell.selected = !cell.selected;
             if (cell.selected) {
-                currentBox.push(cell);
+                state.currentBox.push(cell);
             } else {
-                currentBox = currentBox.filter((item) => item !== cell);
+                state.currentBox = state.currentBox.filter((item) => item !== cell);
             }
         } else {
             setAddingBox(false)
@@ -34,57 +34,59 @@ function addCellToBox(cell) {
 // Helper function to create a box when the "New Box" button is clicked
 // Second click will place the box
 function createBox() {
-    setAddingBox(!addingBox)
-    document.getElementById("newBoxButton").textContent = addingBox ? "Place Box" : "New Box";
-    if (!addingBox) {
-        let boxId = `box${boxCount++}`;
+    setAddingBox(!state.addingBox)
+    console.log("Adding box: ", state.addingBox);
+    document.getElementById("newBoxButton").textContent = state.addingBox ? "Place Box" : "New Box";
+    if (!state.addingBox) {
+        console.log("Creating box");
+        let boxId = `box${state.boxCount++}`;
         let sumBox = 0;
-        colorBox(currentBox);
+        colorBox(state.currentBox);
         for (let i = 0; i < currentBox.length; i++) {
             sumBox += currentBox[i].actualValue;
-            cells_with_box.push(currentBox[i]);
+            state.cells_with_box.push(currentBox[i]);
         }
         boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
         for (let i = 0; i < currentBox.length; i++) {
-            currentBox[i].inBox = boxId;
+            state.currentBox[i].inBox = boxId;
         }
-        currentBox = [];
+        state.currentBox = [];
     }
 }
 
 function addBackDeletedBox() {
-    let boxId = `box${boxCount++}`;
+    let boxId = `box${state.boxCount++}`;
     let sumBox = 0;
     colorBox(currentBox);
     for (let i = 0; i < currentBox.length; i++) {
         sumBox += currentBox[i].actualValue;
-        cells_with_box.push(currentBox[i]);
+        state.cells_with_box.push(currentBox[i]);
     }
     boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
     for (let i = 0; i < currentBox.length; i++) {
-        currentBox[i].inBox = boxId;
+        state.currentBox[i].inBox = boxId;
     }
-    currentBox = [];
+    state.currentBox = [];
 }
 
 function deleteBox(cell) {
-    let box = boxes[cell.inBox];
-    deletedBoxes.push(box);
+    let box = state.boxes[cell.inBox];
+    state.deletedBoxes.push(box);
     for (let i = 0; i < box.cells.length; i++) {
         let boxCell = box.cells[i];
         boxCell.classList.remove(boxCell.color);
         boxCell.inBox = null;
         boxCell.color = null;
         boxCell.actualValue = 0;
-        cells_with_box = cells_with_box.filter((item) => item !== boxCell);
+        state.cells_with_box = cells_with_box.filter((item) => item !== boxCell);
     }
-    delete boxes[cell.inBox];
+    delete state.boxes[cell.inBox];
     resetDeleteBox();
 }
 
 function resetDeleteBox() {
     document.getElementById("grid").classList.remove("selectBox")
-    delBoxButton.textContent = "Delete Box";
+    document.getElementById("delBoxButton").textContent = "Delete Box";
     setDeletingBox(false);
     for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {

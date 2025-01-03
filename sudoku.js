@@ -1,3 +1,6 @@
+import {state} from './state.js';
+
+const {rows, cols, cubes, active_cell, isValid, setIsValid, clearCell} = state;
 
 
 // Helper function to check if the input follows Sudoku rules
@@ -15,12 +18,12 @@ function checkSudoku(cell) {
             cell.classList.add("invalid"); // Mark cell as invalid if duplicate found
         } else {
             // Update the tracking arrays with the new value
-            rows[r][cell.id] = value
-            cols[c][cell.id] = value
-            cubes[cubeIndex][cell.id] = value;
+            state.rows[r][cell.id] = value
+            state.cols[c][cell.id] = value
+            state.cubes[cubeIndex][cell.id] = value;
             cell.actualValue = parseInt(value);
             if (cell.inBox !== null) {
-                boxes[cell.inBox]['sum'] += cell.actualValue;
+                state.boxes[cell.inBox]['sum'] += cell.actualValue;
             }
         }
     }
@@ -32,7 +35,7 @@ function validateSudoku(cell) {
     if (!/^\d$/.test(value) || isValid === false) {
         clearCell(cell);
     } else {
-        active_cell.push(cell);
+        state.active_cell.push(cell);
         checkSudoku(cell);
     }
 }

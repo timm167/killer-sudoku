@@ -1,6 +1,6 @@
 import { setIsValid, state, setTogglingSums } from "./state.js";
 
-const { rows, cols, cubes, active_cell, togglingSums,  boxes, currentBox, cells_with_box, } = state;
+const { rows, cols, cubes, active_cell, togglingSums, boxes, currentBox, cells_with_box } = state;
 
 // Helper function to get the cube index
 function getCubeIndex(row, col) {
@@ -32,13 +32,13 @@ function undoAction(cell) {
 }
 
 function colorChange() {
-    if (availableColors.length === 0) {
-        availableColors = [...transparentColors];
+    if (state.availableColors.length === 0) {
+        state.availableColors = [...transparentColors];
     }
-    colorView.classList.remove(buttonColor);
-    buttonColor = availableColors.pop()
-    colorIndex = availableColors.length;
-    colorView.classList.add(buttonColor);
+    colorView.classList.remove(state.buttonColor);
+    state.buttonColor = state.availableColors.pop()
+    state.colorIndex = state.availableColors.length;
+    colorView.classList.add(state.buttonColor);
 }
 
 const colorView = document.getElementById("colorView")
@@ -54,23 +54,20 @@ function clearCell(cell) {
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
     cell.classList.remove(cell.color)
-    rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
-    cols[cell.col][cell.id] = "";
-    cubes[cell.cube][cell.id] = "";
+    state.rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
+    state.cols[cell.col][cell.id] = "";
+    state.cubes[cell.cube][cell.id] = "";
     cell.inBox && (boxes[cell.inBox]['sum'] -= cell.actualValue);
     cell.inBox = null;
-    cells_with_box = cells_with_box.filter((item) => item !== cell);
-    active_cell = active_cell.filter((item) => item !== cell);
+    state.cells_with_box = cells_with_box.filter((item) => item !== cell);
+    state.active_cell = active_cell.filter((item) => item !== cell);
 }
 
 // Toggle the visibility of sum-related controls
 function toggleSums() {
-    console.log(togglingSums)
-    console.log("Toggling sums")
-    setTogglingSums(!togglingSums);
+    setTogglingSums(!state.togglingSums);
     const sumButtons = document.getElementById("sumButtons");
-    console.log(togglingSums)
-    if (togglingSums) {
+    if (state.togglingSums) {
         setIsValid(false)// Disable Sudoku validation while summing
         sumButtons.classList.remove("hidden");
     } else {

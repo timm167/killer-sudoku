@@ -30,7 +30,7 @@ function createSudokuGrid() {
                 validateSudoku(cell);
             });
             cell.addEventListener("click", function() {
-                if (deletingBox && cell.inBox) {
+                if (state.deletingBox && cell.inBox) {
                     deleteBox(cell);
                 } else {
                     setSelectedCell(cell);
@@ -40,7 +40,7 @@ function createSudokuGrid() {
             row.push(cell);
             gridElement.appendChild(cell);
         }
-        grid.push(row);
+        state.grid.push(row);
     };
 };
 
@@ -49,11 +49,11 @@ function updateGridFocus() {
     for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
             if (isValid) {
-                grid[r][c].canFocus = true;
-                grid[r][c].classList.add("cell-focus");
+                state.grid[r][c].canFocus = true;
+                state.grid[r][c].classList.add("cell-focus");
             } else {
-                grid[r][c].canFocus = false;
-                grid[r][c].classList.remove("cell-focus");
+                state.grid[r][c].canFocus = false;
+                state.grid[r][c].classList.remove("cell-focus");
             }
         }
     }

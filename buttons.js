@@ -12,20 +12,22 @@ export function setUpButtons() {
     });
     document.getElementById("undoButton").addEventListener("click", function() {
         if (togglingSums){
-            currentBox = deleteBox[currentBox.length - 1];
+            state.currentBox = deleteBox[currentBox.length - 1];
             addBackDeletedBox();
             return;
         }
         undoAction((active_cell[active_cell.length - 1]))
         resetDeleteBox()
     });
+
     document.getElementById("newBoxButton").addEventListener("click", function() {
         resetDeleteBox();
         createBox();
     });
+
     const delBoxButton = document.getElementById("delBoxButton");
     delBoxButton.addEventListener("click", function() {
-        if (addingBox){
+        if (state.addingBox){
             return;
         }
         if (deletingBox) {
@@ -34,8 +36,9 @@ export function setUpButtons() {
         else if (!deletingBox) {
             setBoxHoverAnimationOn();
             document.getElementById("grid").classList.add("selectBox");
-            delBoxButton.textContent = "Select a box";
-            deletingBox = true;
+            document.getElementById("delBoxButton").textContent = "Select a box";
+            state.deletingBox = true;
+            console.log("Deleting box:" + state.deletingBox);
         }
     });
 
@@ -55,11 +58,11 @@ export function setUpButtons() {
             }
             setIsValid(true);
         }
-
+    
         toggleSums();
 
         // Update button text based on the state
-        killerToggler.textContent = togglingSums ? "Exit Killer" : "Killer Mode";
+        killerToggler.textContent = state.togglingSums ? "Exit Killer" : "Killer Mode";
         killerToggler.classList.toggle("active");
     });
 }
