@@ -1,0 +1,417 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #72ae92;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+span {
+    font-size: 10px;
+}
+
+.selectBox {
+    box-shadow: 0 0 20px rgba(232, 255, 183, 0.792);
+}
+
+.check-solve .button {
+    width: 200px;
+    padding: 15px 25px;
+}
+
+
+.empty-space-container {
+    height: 65px;
+    width: 680px;
+    background-color: #659a81;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.check-solve {
+    display: flex;
+    margin-bottom: 30px;
+    justify-items: space-around;
+    justify-content: space-around;
+}
+
+.navigation .button {
+    width: 150px;
+    height: 45px;
+}
+
+.flex-sum .button {
+    width: 150px;
+    height: 45px;
+}
+
+.selected {
+    background-color: rgb(222, 241, 80);
+}
+
+.navigation {
+    margin-bottom: 30px;
+}
+
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+    grid-template-rows: repeat(9, 40px); /* 9 rows */
+    width: fit-content;
+  }
+
+
+  .cell {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    background-color: white;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    caret-color: transparent;
+    padding: 0px;
+    border: none;
+  }
+
+  .cell-container {
+    border: 1px solid #b1b2b8;
+    width: 40px;
+    height: 40px;
+    position: relative;
+  }
+
+
+  .flex-sum {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .box-total-note {
+    left: 3px;
+    top: 3px;
+    font-size: 10px;
+    color: rgb(0, 0, 0);
+    pointer-events: none;
+    z-index: 1;
+    width: auto;
+    position: absolute;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+  .cell-focus:focus {
+    outline: none;
+    background-color: rgb(118, 169, 214);
+    border-color: rgb(70, 70, 209);
+  }  
+
+  .cell:focus {
+    outline: none;
+    border-color: rgb(70, 70, 209);
+  }
+
+  .invalid {
+    background-color: salmon;
+  }
+
+  .cell.invalid:focus {
+    outline: none;
+    background-color:salmon; 
+    border-color: rgb(209, 70, 70);
+  }
+
+
+  /* Add thicker borders to separate 3x3 boxes */
+.cell-container:nth-child(3n+1) {
+    border-left: 2px solid #000;
+}
+
+.cell-container:nth-child(3n+3) {
+    border-right: 2px solid #000;
+}
+
+.cell.container:nth-child(3n) {
+    border-right: 2px solid #000;
+}
+
+.cell-container:nth-child(n+1):nth-child(-n+9),
+.cell-container:nth-child(n+28):nth-child(-n+36),
+.cell-container:nth-child(n+55):nth-child(-n+63) {
+    border-top: 2px solid #000;
+}
+
+.cell-container:nth-child(n+19):nth-child(-n+27),
+.cell-container:nth-child(n+46):nth-child(-n+54),
+.cell-container:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: 2px solid #000;
+}
+
+
+
+.cell.selected {
+    background-color: rgba(74, 175, 208, 0.922);
+    box-shadow: 0 0 10px rgba(93, 209, 215, 0.462); 
+    font-weight: bold; 
+    color: #000; 
+}
+
+.sum-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+/* Specific Button Designs */
+/* Specific Button Designs */
+
+#colorView:hover {
+    box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
+    transform: scale(1.01)
+}
+
+.numberButton {
+    background-color: rgb(212, 149, 149);
+    color: rgb(70, 21, 21);
+    border: 1px solid rgb(70, 21, 21);
+    box-shadow: 0 0 10px rgba(27, 75, 40, 0.657);
+    transform: scale(1.01)
+}
+
+.numberButton:hover {
+    background-color: rgb(198, 133, 133);
+}
+
+.active {
+    background-color: rgb(195, 243, 228);
+    border-color: #1b251e;
+    color:#1b251e;
+}
+
+.active:hover {
+    background-color: rgb(133, 198, 178);
+}
+
+#undoButton {
+    background-color: #e9e5d3;
+    color: #333333;
+}
+
+#undoButton:hover {
+    background-color: #f1be8b;
+}
+
+#Save {
+    background-color: #bde2dd;
+    color: #333333;
+}
+
+#Save:hover {
+    background-color:#8ec9ca;
+}
+
+#clearButton {
+    background-color: #f8c7c1;
+    color: #333333;
+}
+
+#clearButton:hover {
+    background-color: #f28c87;
+}
+
+
+#checkButton {
+    background-color: #b2dfdb;
+    color: #333333;
+}
+
+#checkButton:hover {
+    background-color: #80cbc4;
+}
+
+#solveButton {
+    background-color: #b3cde0;
+    color: #333333;
+}
+
+#solveButton:hover {
+    background-color: #9ebad1;
+}
+
+#delBoxButton {
+    background-color: #d1c4e9;
+    color: #333333;
+}
+
+#delBoxButton:hover {
+    background-color: #b39ddb;
+}
+
+#setBoxButton {
+    background-color: #c5cae9;
+    color: #333333;
+}
+
+#setBoxButton:hover {
+    background-color: #9fa8da;
+}
+
+#newBoxButton {
+    background-color: #ffccbc;
+    color: #333333;
+}
+
+#newBoxButton:hover {
+    background-color: #ffab91;
+}
+
+
+/* media */
+
+@media (max-width: 750px) {
+    .navigation {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .empty-space-container {
+        height: 130px;
+        width: 400px;
+    }
+
+    .flex-sum {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .flex-sum .button {
+        width: 150px;
+    }
+    
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Colors */
+
+.red { background-color: rgba(255, 0, 0, 0.6); }
+.green { background-color: rgba(0, 255, 0, 0.6); }
+.blue { background-color: rgba(0, 0, 255, 0.6); }
+.yellow { background-color: rgba(255, 255, 0, 0.6); }
+.cyan { background-color: rgba(0, 255, 255, 0.6); }
+.magenta { background-color: rgba(255, 0, 255, 0.6); }
+.maroon { background-color: rgba(128, 0, 0, 0.6); }
+.dark-green { background-color: rgba(0, 128, 0, 0.6); }
+.navy { background-color: rgba(0, 0, 128, 0.6); }
+.olive { background-color: rgba(128, 128, 0, 0.6); }
+.purple { background-color: rgba(128, 0, 128, 0.6); }
+.teal { background-color: rgba(0, 128, 128, 0.6); }
+.orange { background-color: rgba(255, 165, 0, 0.6); }
+.indigo { background-color: rgba(75, 0, 130, 0.6); }
+.violet { background-color: rgba(238, 130, 238, 0.6); }
+.saddle-brown { background-color: rgba(139, 69, 19, 0.6); }
+.spring-green { background-color: rgba(0, 255, 127, 0.6); }
+.steel-blue { background-color: rgba(70, 130, 180, 0.6); }
+.khaki { background-color: rgba(240, 230, 140, 0.6); }
+.crimson { background-color: rgba(220, 20, 60, 0.6); }
+.pink { background-color: rgba(255, 192, 203, 0.6); }
+.lavender { background-color: rgba(230, 230, 250, 0.6); }
+.peach { background-color: rgba(255, 218, 185, 0.6); }
+.sky-blue { background-color: rgba(135, 206, 235, 0.6); }
+.light-green { background-color: rgba(144, 238, 144, 0.6); }
+.gold { background-color: rgba(255, 215, 0, 0.6); }
+.turquoise { background-color: rgba(64, 224, 208, 0.6); }
+.coral { background-color: rgba(255, 127, 80, 0.6); }
+.mint { background-color: rgba(189, 252, 201, 0.6); }
+.apricot { background-color: rgba(251, 206, 177, 0.6); }
+.rose { background-color: rgba(255, 228, 225, 0.6); }
+.periwinkle { background-color: rgba(204, 204, 255, 0.6); }
+.salmon { background-color: rgba(250, 128, 114, 0.6); }
+.plum { background-color: rgba(221, 160, 221, 0.6); }
+.soft-yellow { background-color: rgba(255, 250, 205, 0.6); }
+.baby-blue { background-color: rgba(137, 207, 240, 0.6); }
+.powder-pink { background-color: rgba(255, 182, 193, 0.6); }
+.aqua { background-color: rgba(0, 255, 255, 0.6); }
+.beige { background-color: rgba(245, 245, 220, 0.6); }
+.pastel-purple { background-color: rgba(216, 191, 216, 0.6); }
+.seashell { background-color: rgba(255, 245, 238, 0.6); }
+.honeydew { background-color: rgba(240, 255, 240, 0.6); }
+.canary-yellow { background-color: rgba(255, 239, 0, 0.6); }
+.misty-rose { background-color: rgba(255, 228, 225, 0.6); }
+.light-coral { background-color: rgba(240, 128, 128, 0.6); }
+.sage { background-color: rgba(188, 184, 138, 0.6); }
+.blush { background-color: rgba(222, 93, 131, 0.6); }
+.almond { background-color: rgba(239, 222, 205, 0.6); }
+.pale-gold { background-color: rgba(253, 239, 198, 0.6); }
+.cream { background-color: rgba(255, 253, 208, 0.6); }
+.pearl { background-color: rgba(234, 224, 200, 0.6); }
+.sand { background-color: rgba(194, 178, 128, 0.6); }
+.copper { background-color: rgba(184, 115, 51, 0.6); }
+.rust { background-color: rgba(183, 65, 14, 0.6); }
+.light-teal { background-color: rgba(144, 228, 193, 0.6); }
+.mauve { background-color: rgba(224, 176, 255, 0.6); }
+.soft-orange { background-color: rgba(255, 200, 124, 0.6); }
+.ivory { background-color: rgba(255, 255, 240, 0.6); }
+.light-gray { background-color: rgba(211, 211, 211, 0.6); }
+.champagne { background-color: rgba(247, 231, 206, 0.6); }
+.peacock-blue { background-color: rgba(51, 102, 255, 0.6); }
+.caramel { background-color: rgba(210, 105, 30, 0.6); }
+.orchid { background-color: rgba(218, 112, 214, 0.6); }
+.silver { background-color: rgba(192, 192, 192, 0.6); }
+.emerald { background-color: rgba(80, 200, 120, 0.6); }
+.jade { background-color: rgba(0, 168, 107, 0.6); }
+.sunset { background-color: rgba(255, 94, 77, 0.6); }
+.cerulean { background-color: rgba(42, 82, 190, 0.6); }
+.topaz { background-color: rgba(255, 200, 124, 0.6); }
+.amethyst { background-color: rgba(153, 102, 204, 0.6); }
+.mocha { background-color: rgba(196, 140, 96, 0.6); }
+.soft-lavender { background-color: rgba(230, 230, 250, 0.6); }
+.cloud { background-color: rgba(200, 227, 255, 0.6); }
+.buttercream { background-color: rgba(255, 240, 200, 0.6); }
+.powder-blue { background-color: rgba(176, 224, 230, 0.6); }
+.moonstone { background-color: rgba(115, 194, 251, 0.6); }
+.sunrise { background-color: rgba(255, 204, 153, 0.6); }
+.dew { background-color: rgba(226, 242, 238, 0.6); }
+.opal { background-color: rgba(168, 195, 188, 0.6); }
+.quartz { background-color: rgba(217, 217, 243, 0.6); }
+.ice-blue { background-color: rgba(215, 244, 255, 0.6); }
+.white-smoke { background-color: rgba(245, 245, 245, 0.6); }
+
+/* Hover Box */
+.hover-box {
+    background-color: red;
+}

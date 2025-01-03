@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Killer Sudoku Builder</title>
+        <link rel="stylesheet" href="index.css"/>
+        <script src="index.js" type="module"></script>
+    </head>
+    <body>
+
+        <h1>Killer Sudoku Builder</h1>
+        <div class="navigation">
+            <button id="undoButton" class="button">Undo <span> (bsp)</span></button>
+            <button id="clearButton" class="button">Reset</button>
+            <button id="buildButton" class="button">Save</button>
+            <button id="killerButton" class="button numberButton">Killer Mode<span> (Shft)</span></button>
+        </div>
+
+        <div id="grid" class="grid">
+            <!-- Grid filled by JS -->
+        </div>
+
+        <div class="empty-space-container">
+            <div id="sumButtons" class="hidden sum-buttons">
+                <div class="flex-sum">        
+                    <button id="delBoxButton" class="button">Delete Box</button>
+                    <button id="setBoxButton" class="button">Set Box Total</button>
+                    <button id="newBoxButton" class="button">New Box <span> (enter)</span></button>
+                    <button id="colorView" class="button">Toggle Color</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="check-solve">
+            <button id="checkButton" class="button">Check Puzzle</button>
+            <button id="solveButton" class="button">Solve Puzzle</button> 
+        </div>
+        <script type="module" src="animation.js"></script> <!-- For animations -->
+        <script type="module" src="buttons.js"></script> <!-- Button logic -->
+        <script type="module" src="colors.js"></script> <!-- Color logic -->
+        <script type="module" src="grid.js"></script> <!-- Grid rendering -->
+        <script type="module" src="keyboard.js"></script> <!-- Keyboard handling -->
+        <script type="module" src="state.js"></script> <!-- State management -->
+        <script type="module" src="sudoku.js"></script> <!-- Sudoku solving logic -->
+        <script type="module" src="utils.js"></script> <!-- Utility functions -->
+        <script type="module" src="box.js"></script> <!-- Box-related logic -->
+    </body>
+</html>
