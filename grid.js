@@ -1,6 +1,6 @@
 // grid.js
 import { state, setSelectedCell } from './state.js';
-import { getCubeIndex } from './utils.js';
+import { getCubeIndex, undoAction } from './utils.js';
 import { validateSudoku } from './sudoku.js';
 import { addCellToBox, deleteBox } from './box.js';
 
@@ -26,6 +26,10 @@ function createSudokuGrid() {
             cell.inBox = null;
             cell.color = null;
             cell.addEventListener("input", function() {
+                if (state.isValid === false) {
+                    undoAction(cell); // MAYBE TRY ADDING ANOTHER STATE VARIABLE TO CHECK IF THE CELL IS INVALID
+                    return;
+                }
                 validateSudoku(cell);
             });
             cell.addEventListener("click", function() {

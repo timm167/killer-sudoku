@@ -3,7 +3,7 @@ import {clearSudoku, toggleSums, undoAction} from "./utils.js";
 import {resetDeleteBox, addBackDeletedBox, deleteBox, createBox} from "./box.js";
 import {setBoxHoverAnimationOn} from "./animation.js";
 
-const { togglingSums, isValid, deletingBox, currentBox, active_cell } = state;
+const { togglingSums, deletingBox, currentBox, active_cell } = state;
 
 // Helper function to set up event listeners for buttons
 export function setUpButtons() {
@@ -12,13 +12,10 @@ export function setUpButtons() {
     });
     document.getElementById("undoButton").addEventListener("click", function() {
         if (togglingSums){
-            console.log("Cannot undo while in killer mode.");
             state.currentBox = deleteBox[currentBox.length - 1];
             addBackDeletedBox();
             return;
         }
-        console.log("About to call undoAction");
-        console.log(state.active_cell[active_cell.length - 1]);
         undoAction((state.active_cell[active_cell.length - 1]))
         resetDeleteBox()
     });

@@ -1,7 +1,7 @@
 import { setIsValid, state, setTogglingSums } from "./state.js";
 import { transparentColors } from "./colors.js";
 
-const { rows, cols, cubes, active_cell, togglingSums, boxes, currentBox, cells_with_box } = state;
+const { boxes} = state;
 
 // Helper function to get the cube index
 function getCubeIndex(row, col) {
@@ -21,16 +21,14 @@ function isAdjacent(cell) {
             (cell.col === boxCell.col && (cell.row === boxCell.row + 1 || cell.row === boxCell.row - 1))) {
             return true;
         }
-    }
+    }   
     return false;
 }
 
 // Helper function to undo the most recent action
 function undoAction(cell) {
     cell.classList.remove("invalid"); // Remove the "invalid" css class
-    console.log(`about to call clearCell on ${cell.id}`)
     clearCell(cell);
-    console.log(`just called clearCell on cell ${cell.id}`) 
     setIsValid(true) // Reset the validation flag
 }
 
@@ -54,7 +52,6 @@ colorView.addEventListener("click", function() {
 
 // Helper function to clear a cell
 function clearCell(cell) {
-    console.log(`clearing cell ${cell.id}`)
     cell.value = ""; // Clear the input 
     cell.actualValue = 0;
     cell.classList.remove(cell.color)
@@ -63,8 +60,8 @@ function clearCell(cell) {
     state.cubes[cell.cube][cell.id] = "";
     cell.inBox && (boxes[cell.inBox]['sum'] -= cell.actualValue);
     cell.inBox = null;
-    state.cells_with_box = cells_with_box.filter((item) => item !== cell);
-    state.active_cell = active_cell.filter((item) => item !== cell);
+    state.cells_with_box = state.cells_with_box.filter((item) => item !== cell);
+    state.active_cell = state.active_cell.filter((item) => item !== cell);
 }
 
 // Toggle the visibility of sum-related controls
