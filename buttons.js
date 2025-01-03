@@ -12,11 +12,14 @@ export function setUpButtons() {
     });
     document.getElementById("undoButton").addEventListener("click", function() {
         if (togglingSums){
+            console.log("Cannot undo while in killer mode.");
             state.currentBox = deleteBox[currentBox.length - 1];
             addBackDeletedBox();
             return;
         }
-        undoAction((active_cell[active_cell.length - 1]))
+        console.log("About to call undoAction");
+        console.log(state.active_cell[active_cell.length - 1]);
+        undoAction((state.active_cell[active_cell.length - 1]))
         resetDeleteBox()
     });
 
@@ -51,14 +54,13 @@ export function setUpButtons() {
     // Toggle sums when the button is clicked
     killerToggler.addEventListener("click", function () {
         resetDeleteBox();
-        if (!isValid) {
-            if (!togglingSums) {
+        if (!state.isValid) {
+            if (!state.togglingSums) {
                 alert("Please remove errors from the board before toggling the sums.");
                 return;
             }
             setIsValid(true);
         }
-    
         toggleSums();
 
         // Update button text based on the state

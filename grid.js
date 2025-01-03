@@ -7,7 +7,6 @@ import { addCellToBox, deleteBox } from './box.js';
 const { deletingBox } = state;
 
 const gridElement = document.getElementById("grid");
-let grid = [];
 
 function createSudokuGrid() {
     for (let r = 0; r < 9; r++) {
@@ -34,7 +33,7 @@ function createSudokuGrid() {
                     deleteBox(cell);
                 } else {
                     setSelectedCell(cell);
-                    addCellToBox(cell);
+                    state.togglingSums && addCellToBox(cell);
                 }
             });
             row.push(cell);

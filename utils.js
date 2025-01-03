@@ -1,4 +1,5 @@
 import { setIsValid, state, setTogglingSums } from "./state.js";
+import { transparentColors } from "./colors.js";
 
 const { rows, cols, cubes, active_cell, togglingSums, boxes, currentBox, cells_with_box } = state;
 
@@ -14,8 +15,8 @@ function clearSudoku() {
 
 // Helper function to check if a cell is adjacent to at least one member in currentBox
 function isAdjacent(cell) {
-    for (let i = 0; i < currentBox.length; i++) {
-        let boxCell = currentBox[i];
+    for (let i = 0; i < state.currentBox.length; i++) {
+        let boxCell = state.currentBox[i];
         if ((cell.row === boxCell.row && (cell.col === boxCell.col + 1 || cell.col === boxCell.col - 1)) ||
             (cell.col === boxCell.col && (cell.row === boxCell.row + 1 || cell.row === boxCell.row - 1))) {
             return true;
@@ -26,8 +27,10 @@ function isAdjacent(cell) {
 
 // Helper function to undo the most recent action
 function undoAction(cell) {
-    clearCell(cell);
     cell.classList.remove("invalid"); // Remove the "invalid" css class
+    console.log(`about to call clearCell on ${cell.id}`)
+    clearCell(cell);
+    console.log(`just called clearCell on cell ${cell.id}`) 
     setIsValid(true) // Reset the validation flag
 }
 
@@ -36,8 +39,9 @@ function colorChange() {
         state.availableColors = [...transparentColors];
     }
     colorView.classList.remove(state.buttonColor);
-    state.buttonColor = state.availableColors.pop()
+    state.availableColors.pop()
     state.colorIndex = state.availableColors.length;
+    state.buttonColor = state.availableColors[state.colorIndex-1];
     colorView.classList.add(state.buttonColor);
 }
 
@@ -67,6 +71,7 @@ function clearCell(cell) {
 function toggleSums() {
     setTogglingSums(!state.togglingSums);
     const sumButtons = document.getElementById("sumButtons");
+    console.log("Toggling sums: " + state.togglingSums);
     if (state.togglingSums) {
         setIsValid(false)// Disable Sudoku validation while summing
         sumButtons.classList.remove("hidden");

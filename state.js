@@ -21,7 +21,8 @@ const state = {
     cellColors: [...transparentColors],    
     deletingBox: false,                     // Used to track if the "Delete Box" button has been clicked
     deletedBoxes: [],                        // Used to track deleted boxes
-    grid: []
+    grid: [],
+    isButtonDisabled: false,
 };
 
 // Functions to interact with state

@@ -2,15 +2,15 @@ import { state, setAddingBox, setDeletingBox } from './state.js';
 import { colorChange, isAdjacent } from './utils.js';
 // import { addHoverBox, removeHoverBox } from './animation.js';
 
-const {cellColors, colorIndex, cells_with_box, boxes, deletedBoxes, addingBox, currentBox } = state;
+const {cellColors, colorIndex, boxes, currentBox } = state;
 
 function colorBox(box) {
-    let color = cellColors[colorIndex];
+    colorChange();
+    let color = state.cellColors[state.colorIndex];
     for (let i = 0; i < box.length; i++) {
         box[i].classList.add(color);
         box[i].classList.remove("selected");
         box[i].color = color;
-        colorChange();
     }
 }
 
@@ -35,18 +35,17 @@ function addCellToBox(cell) {
 // Second click will place the box
 function createBox() {
     setAddingBox(!state.addingBox)
-    console.log("Adding box: ", state.addingBox);
     document.getElementById("newBoxButton").textContent = state.addingBox ? "Place Box" : "New Box";
     if (!state.addingBox) {
         console.log("Creating box");
         let boxId = `box${state.boxCount++}`;
         let sumBox = 0;
         colorBox(state.currentBox);
-        for (let i = 0; i < currentBox.length; i++) {
-            sumBox += currentBox[i].actualValue;
-            state.cells_with_box.push(currentBox[i]);
+        for (let i = 0; i < state.currentBox.length; i++) {
+            sumBox += state.currentBox[i].actualValue;
+            state.cells_with_box.push(state.currentBox[i]);
         }
-        boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+        state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox }
         for (let i = 0; i < currentBox.length; i++) {
             state.currentBox[i].inBox = boxId;
         }
@@ -78,7 +77,7 @@ function deleteBox(cell) {
         boxCell.inBox = null;
         boxCell.color = null;
         boxCell.actualValue = 0;
-        state.cells_with_box = cells_with_box.filter((item) => item !== boxCell);
+        state.cells_with_box = state.cells_with_box.filter((item) => item !== boxCell);
     }
     delete state.boxes[cell.inBox];
     resetDeleteBox();
@@ -102,8 +101,8 @@ function resetDeleteBox() {
 
 // Helper function to check if a cell is a valid addition to a box
 function isValidBoxAddition(cell) {
-    if (!cells_with_box.includes(cell)) {
-        if (currentBox.length === 0) {
+    if (!state.cells_with_box.includes(cell)) {
+        if (state.currentBox.length === 0) {
             return true;
         } else {
             return isAdjacent(cell);

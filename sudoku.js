@@ -1,6 +1,7 @@
-import {state} from './state.js';
+import {state, setIsValid} from './state.js';
+import {clearCell} from './utils.js';
 
-const {rows, cols, cubes, active_cell, isValid, setIsValid, clearCell} = state;
+const {rows, cols, cubes, isValid} = state;
 
 
 // Helper function to check if the input follows Sudoku rules
@@ -32,7 +33,8 @@ function checkSudoku(cell) {
 // Helper function to validate the input
 function validateSudoku(cell) {
     let value = cell.value;
-    if (!/^\d$/.test(value) || isValid === false) {
+    if (!/^\d$/.test(value) || state.isValid === false) {
+        console.log(`invalid input is causing the cell ${cell.id} to be cleared`)
         clearCell(cell);
     } else {
         state.active_cell.push(cell);
