@@ -73,5 +73,5 @@ export const transparentColors = [
   "canary-yellow",
   "honeydew",
   "seashell",
-  "aqua",
+  "aqua"
 ];
