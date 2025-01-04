@@ -47,7 +47,6 @@ function createBox() {
         state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox, 'declaredTotal': sumBox }
         for (let i = 0; i < state.currentBox.length; i++) {
             state.currentBox[i].inBox = boxId;
-            console.log(state.currentBox[i].inBox)
         }
         state.currentBox = [];
     }
@@ -127,7 +126,6 @@ function setBoxTotal(cell) {
         return;
     }
     state.boxes[cell.inBox]['declaredTotal'] = newDeclaredTotal;
-    console.log("boxes", state.boxes);
     let cellContainer = cell.parentElement;
     let span = cellContainer.querySelector('.box-total-note');
     span.textContent = newDeclaredTotal;

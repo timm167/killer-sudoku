@@ -1,9 +1,9 @@
-import testBoxes from './testdata.js';
+import testBoxes from './testboxes.js';
+import testGrid from './testgrid.js';   
 import { state } from './state.js';
 
 function populateBoxes(){
     state.boxes = testBoxes
-    console.log("boxes", state.boxes);
     for (let key in state.boxes) {
         let box = state.boxes[key];
         let cell = box.cells[0];
@@ -24,7 +24,18 @@ function populateBoxes(){
     }
 }
 
-function populateGrid(grid){
-
+function populateGrid(){
+    state.grid = testGrid;
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            let cell = state.grid[r][c];
+            let inputElement = document.getElementById(`${r}/${c}`);
+            if (inputElement && cell.actualValue !== 0) {
+                inputElement.value = cell.actualValue;
+            }
+            
+        }
+    }
 }
+
 export {populateBoxes, populateGrid};

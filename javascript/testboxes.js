@@ -1,4 +1,4 @@
-const textBoxes = {
+const testBoxes = {
     "box0": {
         "cells": [
             {
@@ -1003,4 +1003,4 @@ const textBoxes = {
     }
 }
 
-export default textBoxes;
+export default testBoxes;

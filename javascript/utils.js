@@ -55,22 +55,7 @@ function clearCell(cell) {
     state.rows[cell.row][cell.id] = ""; // Clear the tracking dictionaries
     state.cols[cell.col][cell.id] = "";
     state.cubes[cell.cube][cell.id] = "";
-    console.log(`before filtering out`)
-    let cellViewer1 = []
-    for (let i = 0; i < state.active_cell.length; i++) {
-        cellViewer1.push(state.active_cell[i].id)
-    }
-    console.log(cellViewer1) 
-
     state.active_cell = state.active_cell.filter((item) => item !== cell);
-    
-    console.log(`after filtering out`)
-    let cellViewer2 = []
-    for (let i = 0; i < state.active_cell.length; i++) {
-        cellViewer2.push(state.active_cell[i].id)
-    }
-    console.log(cellViewer2) 
-
 }
 
 // Toggle the visibility of sum-related controls
