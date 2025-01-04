@@ -8,7 +8,8 @@ CORS(app)  # Enable CORS for all routes
 
 
 # This function just tests the API is working
-def handle_sudoku(fetched_grid):
+def handle_sudoku(fetched_grid, fetched_boxes):
+    print(fetched_grid)
     grid = simplify_grid(fetched_grid)
     solvable = check_solvable(grid)
     ways = 1
@@ -24,12 +25,16 @@ def solve():
         # Extract the grid from the incoming JSON data
         data = request.get_json()
         fetched_grid = data.get('grid')  # grid is expected to be an array of arrays
+        fetched_boxes = data.get('boxes')  # boxes is expected to be a dictionary with cells, sum, and declaredValue
         
         if not fetched_grid:
             return jsonify({'error': 'Grid not provided'}), 400
 
+        if not fetched_boxes:
+            return jsonify({'error': 'Boxes not provided'}), 400
+        
         # Call the handle_sudoku function
-        solvable, ways, failedSquare, solvedGrid = handle_sudoku(fetched_grid)
+        solvable, ways, failedSquare, solvedGrid = handle_sudoku(fetched_grid, fetched_boxes)
         
         # Send back a JSON response with solvability and number of ways
         return jsonify({

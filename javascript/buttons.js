@@ -3,6 +3,7 @@ import {clearSudoku, toggleSums, undoAction} from "./utils.js";
 import {resetDeleteBox, addBackDeletedBox, deleteBox, createBox} from "./box.js";
 import {setBoxHoverAnimationOn} from "./animation.js";
 import {handleSolveButtonClick} from "./fetch.js";
+import {populateBoxes} from "./populate.js";   
 
 const { togglingSums, deletingBox, currentBox, active_cell } = state;
 
@@ -84,5 +85,9 @@ export function setUpButtons() {
 
     document.getElementById("solveButton").addEventListener("click", function() {
         handleSolveButtonClick();
+    });
+
+    document.getElementById("testButton").addEventListener("click", function() {
+        populateBoxes();
     });
 }

@@ -1,8 +1,6 @@
 import { setIsValid, state, setTogglingSums } from "./state.js";
 import { transparentColors } from "./colors.js";
 
-const { boxes} = state;
-
 // Helper function to get the cube index
 function getCubeIndex(row, col) {
     return Math.floor(row / 3) * 3 + Math.floor(col / 3);

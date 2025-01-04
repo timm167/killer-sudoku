@@ -45,8 +45,9 @@ function createBox() {
             state.cells_with_box.push(state.currentBox[i]);
         }
         state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox, 'declaredTotal': sumBox }
-        for (let i = 0; i < currentBox.length; i++) {
+        for (let i = 0; i < state.currentBox.length; i++) {
             state.currentBox[i].inBox = boxId;
+            console.log(state.currentBox[i].inBox)
         }
         state.currentBox = [];
     }
