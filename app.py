@@ -13,8 +13,7 @@ def handle_sudoku(fetched_grid, fetched_boxes):
     boxes = fetched_boxes
     ways = 0
     solvable = check_solvable(grid, boxes)
-    if solvable:
-        ways = check_ways_solvable(grid, boxes)
+    ways = check_ways_solvable(grid, boxes)
 
     failedSquare = None
     solvedGrid = None

@@ -60,7 +60,7 @@ function addBackDeletedBox() {
         sumBox += currentBox[i].actualValue;
         state.cells_with_box.push(currentBox[i]);
     }
-    boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+    boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox } // NEEDS TO BE FIXED LATER TO INCLUDE DECLARED TOTAL
     for (let i = 0; i < currentBox.length; i++) {
         state.currentBox[i].inBox = boxId;
     }
