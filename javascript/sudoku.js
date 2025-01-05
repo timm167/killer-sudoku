@@ -24,8 +24,8 @@ function checkSudoku(cell) {
         }
         else {
             // Update the tracking arrays with the new value
-            state.rows[r][cell.id] = value
-            state.cols[c][cell.id] = value
+            state.rows[r][cell.id] = value;
+            state.cols[c][cell.id] = value;
             state.cubes[cubeIndex][cell.id] = value;
             console.log("updating cell.actualValue")
             let actualValue = parseInt(value);
