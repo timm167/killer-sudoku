@@ -4,6 +4,8 @@ import {resetDeleteBox, addBackDeletedBox, deleteBox, createBox} from "./box.js"
 import {setBoxHoverAnimationOn} from "./animation.js";
 import {handleSolveButtonClick} from "./fetch.js";
 import {populateBoxes, populateGrid} from "./populate.js";   
+import testBoxes from "./testboxes.js";
+import testGrid from "./testgrid.js";
 
 const { togglingSums, deletingBox, currentBox, active_cell } = state;
 
@@ -88,7 +90,9 @@ export function setUpButtons() {
     });
 
     document.getElementById("testButton").addEventListener("click", function() {
+        state.boxes = testBoxes
         populateBoxes();
+        state.grid = testGrid;
         populateGrid();
     });
 

@@ -1,3 +1,4 @@
+import { populateBoxes, populateGrid } from './populate.js';
 import { state } from './state.js';
 
 const handleSolveButtonClick = async () => {
@@ -10,8 +11,13 @@ const handleSolveButtonClick = async () => {
 
         if (response.ok) {
             const result = await response.json();
-            alert('Solvable:', result.solvable, 'Ways:', result.ways);
+            alert(`Solvable: ${result.solvable}, Ways: ${result.ways}`);
             // Update state or UI with the result
+            state.grid = result.solvedGrid;
+            state.boxes = result.boxes;
+            populateBoxes();
+            populateGrid();
+
         } else {
             alert('Failed to connect to server.', await response.text());
         }
