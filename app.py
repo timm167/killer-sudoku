@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # Import CORS
-from sudoku_logic import check_solvable
+from sudoku_logic import check_solvable, check_ways_solvable
 from grid import simplify_grid
 
 app = Flask(__name__)
@@ -9,15 +9,19 @@ CORS(app)  # Enable CORS for all routes
 
 # This function just tests the API is working
 def handle_sudoku(fetched_grid, fetched_boxes):
-    print(fetched_grid)
     grid = simplify_grid(fetched_grid)
-    solvable = check_solvable(grid)
-    ways = 1
+    boxes = fetched_boxes
+    ways = 0
+    solvable = check_solvable(grid, boxes)
+    if solvable:
+        ways = check_ways_solvable(grid, boxes)
+
     failedSquare = None
     solvedGrid = None
+    solvedBoxes = None
 
     # This logic is going to be replaced with DFS algorithm to solve the sudoku
-    return solvable, ways, failedSquare, solvedGrid
+    return solvable, ways, failedSquare, solvedGrid, solvedBoxes
 
 @app.route('/solve', methods=['POST']) # This endpoint receives a POST request
 def solve():
