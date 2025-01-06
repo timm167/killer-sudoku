@@ -14,7 +14,7 @@ const handleSolveButtonClick = async () => {
             alert(`Solvable: ${result.solvable}, Ways: ${result.ways}`);
             // Update state or UI with the result
             state.grid = result.solvedGrid;
-            state.boxes = result.boxes;
+            state.boxes = result.solvedBoxes;
             populateBoxes();
             populateGrid();
 

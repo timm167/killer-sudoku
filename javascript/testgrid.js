@@ -6,7 +6,7 @@ const testGrid = [
             "col": 0,
             "cube": 0,
             "selected": false,
-            "actualValue": 1,
+            "actualValue": 0,
             "inBox": "box0",
             "color": "aqua"
         },

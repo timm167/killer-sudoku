@@ -3,17 +3,12 @@ from flask_cors import CORS
 from sudoku_logic import check_solvable, check_ways_solvable
 from grid import simplify_grid
 from boxes import simplify_boxes
+import sys 
 
-import sys
-import json
-
-sys.setrecursionlimit(1000) 
-
-JSON_FILE_PATH = "test_data.json"
+sys.setrecursionlimit(60000) 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
-CORS(app, origins=["http://127.0.0.1:3000"])  # Enable CORS for all routes
+CORS(app, origins=["http://127.0.0.1:3000"])
 
 # def write_grid_data(data):
 #     with open(JSON_FILE_PATH, 'w') as file:
@@ -27,6 +22,8 @@ CORS(app, origins=["http://127.0.0.1:3000"])  # Enable CORS for all routes
 def handle_sudoku(fetched_grid, fetched_boxes):
     grid = simplify_grid(fetched_grid)
     boxes = simplify_boxes(grid, fetched_boxes)
+    print("Grid", fetched_grid)
+    print("Boxes", fetched_boxes)
     ways = 1
     solvable, solvedGrid, solvedBoxes = check_solvable(grid, boxes)
     if not solvable:

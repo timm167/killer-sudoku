@@ -1,10 +1,12 @@
 from validate import validate_cell_iteration
 from permanent import permanently_disallowed, cell_too_high
+import sys
+sys.setrecursionlimit(60000) 
 
 def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cells=[], permanently_disallowed_pairs=[], recursion_depth=0):
     print("Recursion depth", recursion_depth)
     recursion_depth += 1
-    if recursion_depth > 3:
+    if recursion_depth > 50000:
         print("Recursion depth exceeded")
         return False, grid, boxes
 
@@ -47,6 +49,7 @@ def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cel
             result, solved_grid, solved_boxes = check_solvable(grid, boxes, find_empty_cell(grid, filled_cells), disallowed_pairs, filled_cells, permanently_disallowed_pairs, recursion_depth)
             if result:
                 return result, solved_grid, solved_boxes
+            return False, grid, boxes
 
     if len(filled_cells) == 0:
         print("No valid value found for the initial empty cell. Sudoku is unsolvable.")
@@ -73,10 +76,7 @@ def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cel
     print("Filled cells:", filled_cells)
 
     result, solvedGrid, solvedBoxes = check_solvable(grid, boxes, empty_cell, disallowed_pairs, filled_cells, permanently_disallowed_pairs, recursion_depth)
-    if result:
-        return result, solvedGrid, solvedBoxes
-
-    return False, grid, boxes
+    return result, solvedGrid, solvedBoxes
 
 def check_ways_solvable(grid, boxes, fetched_grid, fetched_boxes):
     return 1  # This is a placeholder for the actual implementation
