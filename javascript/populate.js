@@ -1,5 +1,3 @@
-import testBoxes from './testboxes.js';
-import testGrid from './testgrid.js';   
 import { state } from './state.js';
 
 function populateBoxes(){
@@ -31,7 +29,11 @@ function populateGrid(){
             if (inputElement && cell.actualValue !== 0) {
                 inputElement.value = cell.actualValue;
             }
-            
+            for (let box_cell of state.boxes[cell.inBox]['cells']) {
+                if (box_cell.row === r && box_cell.col === c) {
+                    box_cell.actualValue = cell.actualValue;
+                }
+            }
         }
     }
 }

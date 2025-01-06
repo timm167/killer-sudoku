@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  
 from sudoku_logic import check_solvable, check_ways_solvable
 from grid import simplify_grid
+import sys
+
+sys.setrecursionlimit(1000) 
 
 app = Flask(__name__)
 CORS(app, origins=["http://127.0.0.1:3000"])  # Enable CORS for all routes

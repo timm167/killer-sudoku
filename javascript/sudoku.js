@@ -32,7 +32,13 @@ function checkSudoku(cell) {
             state.grid[r][c].actualValue = actualValue;
             if (cell.inBox !== null) {
                 state.boxes[cell.inBox]['sum'] += cell.actualValue;
+                for (let box_cell of state.boxes[cell.inBox]['cells']) {
+                    if (box_cell.row === r && box_cell.col === c) {
+                        box_cell.actualValue = actualValue;
+                    }
+                }
             }
+
         }
     }
 }
