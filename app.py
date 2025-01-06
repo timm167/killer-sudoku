@@ -2,23 +2,27 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS  
 from sudoku_logic import check_solvable, check_ways_solvable
 from grid import simplify_grid
+from boxes import simplify_boxes
+
 import sys
 
 sys.setrecursionlimit(1000) 
 
+
 app = Flask(__name__)
+app.config['DEBUG'] = True
 CORS(app, origins=["http://127.0.0.1:3000"])  # Enable CORS for all routes
 
 
 # This function just tests the API is working
 def handle_sudoku(fetched_grid, fetched_boxes):
     grid = simplify_grid(fetched_grid)
-    boxes = fetched_boxes
-    ways = 0
+    boxes = simplify_boxes(grid, fetched_boxes)
+    ways = 1
     solvable, solvedGrid, solvedBoxes = check_solvable(grid, boxes)
     if not solvable:
         ways = 0
-    ways = check_ways_solvable(grid, boxes, simplify_grid(fetched_grid), fetched_boxes)
+    # ways = check_ways_solvable(grid, boxes, simplify_grid(fetched_grid), simplify_boxes(grid, fetched_boxes))
 
     # This logic is going to be replaced with DFS algorithm to solve the sudoku
     return solvable, ways, solvedGrid, solvedBoxes

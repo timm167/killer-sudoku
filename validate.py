@@ -30,8 +30,6 @@ def validate_grid_context(cell, grid, attemptedValue):
     return False
 
 def validate_box_context(cell, boxes, attemptedValue):
-    print("validating box context")
-    print(f"Attempting to check if cell {cell['row']}, {cell['col']} can be {attemptedValue} in box {cell['inBox']}")
     if cell['inBox'] is None:  # If the cell isn't in a box, skip the box constraints
         print("Cell is not in a box")
         return True
@@ -55,7 +53,8 @@ def validate_box_context(cell, boxes, attemptedValue):
     return True
 
 def validate_cell_iteration(cell, boxes, grid, attemptedValue):
-    print("within validating boxes",(boxes)) ## THIS LINE HERE SHOWS THAT BOXES DOESNT EXIST OR IS EMPTY
+    print(id(boxes))
+    print(len(boxes))
     print(f"Attempting to check if cell {cell['row']}, {cell['col']} can be {attemptedValue}")
     if validate_box_context(cell, boxes, attemptedValue):
         return validate_grid_context(cell, grid, attemptedValue) ## returns true if the constraints are met

@@ -1,12 +1,20 @@
 from validate import validate_cell_iteration
 from permanent import permanently_disallowed, cell_too_high
 
-def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cells=[], permanently_disallowed_pairs=[]):
+def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cells=[], permanently_disallowed_pairs=[], recursion_depth=0):
+    print("Recursion depth", recursion_depth)
+    recursion_depth += 1
+    if recursion_depth > 50:
+        print("Recursion depth exceeded")
+        return False, grid, boxes
     if empty_cell is None:
         empty_cell = find_empty_cell(grid)
     if not empty_cell:
         print("No empty cell found. Sudoku is solved.")
         return True, grid, boxes
+
+    print("permanent disallowed pairs", permanently_disallowed_pairs)
+
 
     for i in range(1, 10):
         print(f"Checking value {i} for cell ({empty_cell['row']}, {empty_cell['col']})")
@@ -24,13 +32,13 @@ def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cel
             print(f"Value {attemptedValue} is too high for cell ({empty_cell['row']}, {empty_cell['col']})")
             break
 
-        print("Pre-validate boxes", id(boxes))
-
 
         if validate_cell_iteration(cell=empty_cell, boxes=boxes, grid=grid, attemptedValue=attemptedValue):
             print(f"Value {attemptedValue} validated successfully for cell ({empty_cell['row']}, {empty_cell['col']})")
             grid[empty_cell['row']][empty_cell['col']]['actualValue'] = attemptedValue
+            print(f"The old sum for {empty_cell['inBox']} is {boxes[empty_cell['inBox']]['sum']}")
             boxes[empty_cell['inBox']]['sum'] += attemptedValue
+            print(f"The new sum for {empty_cell['inBox']} is {boxes[empty_cell['inBox']]['sum']}")
             for box_cell in boxes[empty_cell['inBox']]['cells']:
                 if box_cell['row'] == empty_cell['row'] and box_cell['col'] == empty_cell['col']:
                     box_cell['actualValue'] = attemptedValue  # updates the boxes
@@ -39,7 +47,7 @@ def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cel
 
             print("Recursing to check next cell")
             print("Next cell to check is", find_empty_cell(grid))
-            result, solved_grid, solved_boxes = check_solvable(grid, boxes, find_empty_cell(grid), disallowed_pairs, filled_cells, permanently_disallowed_pairs)
+            result, solved_grid, solved_boxes = check_solvable(grid, boxes, find_empty_cell(grid), disallowed_pairs, filled_cells, permanently_disallowed_pairs, recursion_depth)
             if result:
                 return result, solved_grid, solved_boxes
 
@@ -61,13 +69,13 @@ def check_solvable(grid, boxes, empty_cell=None, disallowed_pairs=[], filled_cel
     grid[empty_cell['row']][empty_cell['col']]['actualValue'] = 0  # reset the cell
 
     print("State after backtracking:")
-    print("Grid:", grid)
-    print("Boxes:", boxes)
+    # print("Grid:", grid)
+    # print("Boxes:", boxes)
     print("Empty cell:", empty_cell)
     print("Disallowed pairs:", disallowed_pairs)
     print("Filled cells:", filled_cells)
 
-    result, solvedGrid, solvedBoxes = check_solvable(grid, boxes, empty_cell, disallowed_pairs, filled_cells, permanently_disallowed_pairs)
+    result, solvedGrid, solvedBoxes = check_solvable(grid, boxes, empty_cell, disallowed_pairs, filled_cells, permanently_disallowed_pairs, recursion_depth)
     if result:
         return result, solvedGrid, solvedBoxes
 
