@@ -3,7 +3,7 @@ import { state } from './state.js';
 
 const handleSolveButtonClick = async () => {
     try {
-        const response = await fetch('http://127.0.0.1:5000/solve', {
+        const response = await fetch('http://0.0.0.0:10000/solve', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ grid: state.grid, boxes: state.boxes }),
