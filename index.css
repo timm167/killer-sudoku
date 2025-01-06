@@ -92,7 +92,7 @@ span {
   }
 
   .cell-container {
-    border: 1px solid #b1b2b8;
+    border: 1.5px solid #647463db;
     width: 40px;
     height: 40px;
     position: relative;
@@ -149,27 +149,27 @@ input[type="number"]::-webkit-inner-spin-button {
 
   /* Add thicker borders to separate 3x3 boxes */
 .cell-container:nth-child(3n+1) {
-    border-left: 2px solid #000;
+    border-left: 2.5px solid #000;
 }
 
 .cell-container:nth-child(3n+3) {
-    border-right: 2px solid #000;
+    border-right: 2.5px solid #000;
 }
 
 .cell.container:nth-child(3n) {
-    border-right: 2px solid #000;
+    border-right: 2.5px solid #000;
 }
 
 .cell-container:nth-child(n+1):nth-child(-n+9),
 .cell-container:nth-child(n+28):nth-child(-n+36),
 .cell-container:nth-child(n+55):nth-child(-n+63) {
-    border-top: 2px solid #000;
+    border-top: 2.5px solid #000;
 }
 
 .cell-container:nth-child(n+19):nth-child(-n+27),
 .cell-container:nth-child(n+46):nth-child(-n+54),
 .cell-container:nth-child(n+73):nth-child(-n+81) {
-    border-bottom: 2px solid #000;
+    border-bottom: 2.5px solid #000000;
 }
 
 
@@ -328,18 +328,20 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Colors */
 
+/* Colors */
+
 .red { background-color: rgba(255, 0, 0, 0.6); }
 .green { background-color: rgba(0, 255, 0, 0.6); }
 .blue { background-color: rgba(0, 0, 255, 0.6); }
-.yellow { background-color: rgba(255, 255, 0, 0.6); }
+.yellow { background-color: rgb(255, 255, 0); }
 .cyan { background-color: rgba(0, 255, 255, 0.6); }
 .magenta { background-color: rgba(255, 0, 255, 0.6); }
 .maroon { background-color: rgba(128, 0, 0, 0.6); }
 .dark-green { background-color: rgba(0, 128, 0, 0.6); }
-.navy { background-color: rgba(0, 0, 128, 0.6); }
+.navy { background-color: rgb(37, 146, 255); }
 .olive { background-color: rgba(128, 128, 0, 0.6); }
-.purple { background-color: rgba(128, 0, 128, 0.6); }
-.teal { background-color: rgba(0, 128, 128, 0.6); }
+.purple { background-color: rgba(144, 59, 144, 0.763); }
+.teal { background-color: rgba(181, 255, 255, 0.983); }
 .orange { background-color: rgba(255, 165, 0, 0.6); }
 .indigo { background-color: rgba(75, 0, 130, 0.6); }
 .violet { background-color: rgba(238, 130, 238, 0.6); }
@@ -348,8 +350,8 @@ input[type="number"]::-webkit-inner-spin-button {
 .steel-blue { background-color: rgba(70, 130, 180, 0.6); }
 .khaki { background-color: rgba(240, 230, 140, 0.6); }
 .crimson { background-color: rgba(220, 20, 60, 0.6); }
-.pink { background-color: rgba(255, 192, 203, 0.6); }
-.lavender { background-color: rgba(230, 230, 250, 0.6); }
+.pink { background-color: rgb(255, 170, 0); }
+.lavender { background-color: rgb(236, 162, 255); }
 .peach { background-color: rgba(255, 218, 185, 0.6); }
 .sky-blue { background-color: rgba(135, 206, 235, 0.6); }
 .light-green { background-color: rgba(144, 238, 144, 0.6); }
@@ -357,20 +359,20 @@ input[type="number"]::-webkit-inner-spin-button {
 .turquoise { background-color: rgba(64, 224, 208, 0.6); }
 .coral { background-color: rgba(255, 127, 80, 0.6); }
 .mint { background-color: rgba(189, 252, 201, 0.6); }
-.apricot { background-color: rgba(251, 206, 177, 0.6); }
-.rose { background-color: rgba(255, 228, 225, 0.6); }
+.apricot { background-color: rgb(255, 0, 238); }
+.rose { background-color: rgb(241, 121, 108); }
 .periwinkle { background-color: rgba(204, 204, 255, 0.6); }
 .salmon { background-color: rgba(250, 128, 114, 0.6); }
 .plum { background-color: rgba(221, 160, 221, 0.6); }
-.soft-yellow { background-color: rgba(255, 250, 205, 0.6); }
+.soft-yellow { background-color: rgb(255, 250, 205); }
 .baby-blue { background-color: rgba(137, 207, 240, 0.6); }
 .powder-pink { background-color: rgba(255, 182, 193, 0.6); }
-.aqua { background-color: rgba(0, 255, 255, 0.6); }
+.aqua { background-color: rgb(162, 253, 177); }
 .beige { background-color: rgba(245, 245, 220, 0.6); }
-.pastel-purple { background-color: rgba(216, 191, 216, 0.6); }
+.pastel-purple { background-color: rgb(210, 158, 210); }
 .seashell { background-color: rgba(255, 245, 238, 0.6); }
-.honeydew { background-color: rgba(240, 255, 240, 0.6); }
-.canary-yellow { background-color: rgba(255, 239, 0, 0.6); }
+.honeydew { background-color: rgba(79, 97, 185, 0.886); }
+.canary-yellow { background-color: rgb(255, 0, 0); }
 .misty-rose { background-color: rgba(255, 228, 225, 0.6); }
 .light-coral { background-color: rgba(240, 128, 128, 0.6); }
 .sage { background-color: rgba(188, 184, 138, 0.6); }
@@ -378,39 +380,200 @@ input[type="number"]::-webkit-inner-spin-button {
 .almond { background-color: rgba(239, 222, 205, 0.6); }
 .pale-gold { background-color: rgba(253, 239, 198, 0.6); }
 .cream { background-color: rgba(255, 253, 208, 0.6); }
-.pearl { background-color: rgba(234, 224, 200, 0.6); }
-.sand { background-color: rgba(194, 178, 128, 0.6); }
-.copper { background-color: rgba(184, 115, 51, 0.6); }
-.rust { background-color: rgba(183, 65, 14, 0.6); }
-.light-teal { background-color: rgba(144, 228, 193, 0.6); }
-.mauve { background-color: rgba(224, 176, 255, 0.6); }
-.soft-orange { background-color: rgba(255, 200, 124, 0.6); }
-.ivory { background-color: rgba(255, 255, 240, 0.6); }
-.light-gray { background-color: rgba(211, 211, 211, 0.6); }
-.champagne { background-color: rgba(247, 231, 206, 0.6); }
+.pearl { background-color: rgba(255, 244, 218, 0.6); }
+.sand { background-color: rgba(249, 249, 119, 0.6); }
+.copper { background-color: rgba(194, 135, 80, 0.6); }
+.rust { background-color: rgba(168, 23, 67, 0.6); }
+.light-teal { background-color: rgba(113, 223, 177, 0.793); }
+.mauve { background-color: rgba(208, 153, 244, 0.6); }
+.soft-orange { background-color: rgba(243, 148, 24, 0.6); }
+.ivory { background-color: rgba(252, 252, 176, 0.6); }
+.light-gray { background-color: rgba(195, 107, 107, 0.6); }
+.champagne { background-color: rgba(232, 216, 190, 0.6); }
 .peacock-blue { background-color: rgba(51, 102, 255, 0.6); }
-.caramel { background-color: rgba(210, 105, 30, 0.6); }
-.orchid { background-color: rgba(218, 112, 214, 0.6); }
-.silver { background-color: rgba(192, 192, 192, 0.6); }
-.emerald { background-color: rgba(80, 200, 120, 0.6); }
-.jade { background-color: rgba(0, 168, 107, 0.6); }
+.caramel { background-color: rgba(205, 139, 92, 0.6); }
+.orchid { background-color: rgba(232, 130, 228, 0.6); }
+.silver { background-color: rgba(176, 155, 155, 0.6); }
+.emerald { background-color: rgba(34, 241, 103, 0.672); }
+.jade { background-color: rgba(79, 154, 126, 0.6); }
 .sunset { background-color: rgba(255, 94, 77, 0.6); }
 .cerulean { background-color: rgba(42, 82, 190, 0.6); }
-.topaz { background-color: rgba(255, 200, 124, 0.6); }
-.amethyst { background-color: rgba(153, 102, 204, 0.6); }
-.mocha { background-color: rgba(196, 140, 96, 0.6); }
-.soft-lavender { background-color: rgba(230, 230, 250, 0.6); }
+.topaz { background-color: rgba(217, 255, 0, 0.6); }
+.amethyst { background-color: rgba(144, 74, 215, 0.6); }
+.mocha { background-color: rgba(255, 221, 136, 0.6); }
+.soft-lavender { background-color: rgba(141, 141, 252, 0.6); }
 .cloud { background-color: rgba(200, 227, 255, 0.6); }
-.buttercream { background-color: rgba(255, 240, 200, 0.6); }
-.powder-blue { background-color: rgba(176, 224, 230, 0.6); }
-.moonstone { background-color: rgba(115, 194, 251, 0.6); }
-.sunrise { background-color: rgba(255, 204, 153, 0.6); }
-.dew { background-color: rgba(226, 242, 238, 0.6); }
-.opal { background-color: rgba(168, 195, 188, 0.6); }
-.quartz { background-color: rgba(217, 217, 243, 0.6); }
-.ice-blue { background-color: rgba(215, 244, 255, 0.6); }
-.white-smoke { background-color: rgba(245, 245, 245, 0.6); }
+.buttercream { background-color: rgba(246, 224, 163, 0.613); }
+.powder-blue { background-color: rgba(24, 228, 255, 0.6); }
+.moonstone { background-color: rgba(115, 131, 251, 0.6); }
+.sunrise { background-color: rgba(248, 178, 108, 0.6); }
+.dew { background-color: rgba(255, 98, 169, 0.555); }
+.opal { background-color: rgba(253, 255, 106, 0.6); }
+.quartz { background-color: rgba(108, 223, 115, 0.6); }
+.ice-blue { background-color: rgba(220, 101, 226, 0.6); }
+.white-smoke { background-color: rgba(57, 197, 236, 0.6); }
 
+
+.ElectricFuchsia {
+    background-color: rgba(255, 0, 255, 0.6);
+  }
+  
+  .NeonMint {
+    background-color: rgba(170, 255, 189, 0.6);
+  }
+  
+  .SolarYellow {
+    background-color: rgba(255, 255, 100, 0.6);
+  }
+  
+  .ElectricIndigo {
+    background-color: rgba(111, 0, 255, 0.6);
+  }
+  
+  .NeonCoral {
+    background-color: rgba(255, 114, 111, 0.6);
+  }
+  
+  .ShockingPink {
+    background-color: rgba(255, 20, 147, 0.6);
+  }
+  
+  .LushLime {
+    background-color: rgba(190, 255, 88, 0.6);
+  }
+  
+  .AtomicTangerine {
+    background-color: rgba(255, 153, 51, 0.6);
+  }
+  
+  .FluorescentAqua {
+    background-color: rgba(120, 255, 255, 0.6);
+  }
+  
+  .RadiantOrchid {
+    background-color: rgba(204, 102, 255, 0.6);
+  }
+  
+  .ElectricBlue {
+    background-color: rgba(0, 0, 255, 0.6);
+  }
+  
+  .HotMagenta {
+    background-color: rgba(255, 0, 255, 0.6);
+  }
+  
+  .CitrusOrange {
+    background-color: rgba(255, 204, 51, 0.6);
+  }
+  
+  .CherryBombRed {
+    background-color: rgba(255, 56, 92, 0.6);
+  }
+  
+  .ElectricGreen {
+    background-color: rgba(0, 255, 0, 0.6);
+  }
+  
+  .NeonPlum {
+    background-color: rgba(142, 69, 133, 0.6);
+  }
+  
+  .LavaRed {
+    background-color: rgba(255, 69, 0, 0.6);
+  }
+  
+  .BrightCerulean {
+    background-color: rgba(0, 123, 167, 0.6);
+  }
+  
+  .TurboTurquoise {
+    background-color: rgba(0, 255, 255, 0.6);
+  }
+  
+  .VibrantViolet {
+    background-color: rgba(159, 0, 255, 0.6);
+  }
+  
+  .DayGloGreen {
+    background-color: rgba(0, 255, 51, 0.6);
+  }
+  
+  .Limeade {
+    background-color: rgba(184, 255, 51, 0.6);
+  }
+  
+  .UltraPink {
+    background-color: rgba(255, 20, 147, 0.6);
+  }
+  
+  .FireflyYellow {
+    background-color: rgba(255, 255, 100, 0.6);
+  }
+  
+  .VividTeal {
+    background-color: rgba(0, 128, 128, 0.6);
+  }
+  
+  .BerryBurst {
+    background-color: rgba(204, 0, 204, 0.6);
+  }
+  
+  .GlowingAmber {
+    background-color: rgba(255, 191, 0, 0.6);
+  }
+  
+  .SunsetPeach {
+    background-color: rgba(255, 144, 116, 0.6);
+  }
+  
+  .VibrantPeriwinkle {
+    background-color: rgba(204, 204, 255, 0.6);
+  }
+  
+  .UltravioletPink {
+    background-color: rgba(204, 0, 255, 0.6);
+  }
+  
+  .LemonadePunch {
+    background-color: rgba(255, 229, 126, 0.6);
+  }
+  
+  .AtomicLavender {
+    background-color: rgba(187, 137, 255, 0.6);
+  }
+  
+  .BrightSapphire {
+    background-color: rgba(8, 37, 255, 0.6);
+  }
+  
+  .RadiantPeach {
+    background-color: rgba(255, 160, 122, 0.6);
+  }
+  
+  .FluorescentLime {
+    background-color: rgba(204, 255, 102, 0.6);
+  }
+  
+  .HyperBlue {
+    background-color: rgba(53, 170, 255, 0.6);
+  }
+  
+  .TaffyPink {
+    background-color: rgba(255, 182, 193, 0.6);
+  }
+  
+  .NeonTangerine {
+    background-color: rgba(255, 88, 0, 0.6);
+  }
+  
+  .UltraLime {
+    background-color: rgba(164, 255, 74, 0.6);
+  }
+  
+  .TropicalAqua {
+    background-color: rgba(0, 255, 204, 0.6);
+  }
+  
 /* Hover Box */
 .hover-box {
     background-color: red;

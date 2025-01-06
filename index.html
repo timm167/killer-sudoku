@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Killer Sudoku Builder</title>
         <link rel="stylesheet" href="index.css"/>
-        <script src="index.js" type="module"></script>
+        <script src="javascript/index.js" type="module"></script>
     </head>
     <body>
 
@@ -13,7 +13,7 @@
         <div class="navigation">
             <button id="undoButton" class="button">Undo <span> (bsp)</span></button>
             <button id="clearButton" class="button">Reset</button>
-            <button id="buildButton" class="button">Save</button>
+            <button id="saveButton" class="button">Save</button>
             <button id="killerButton" class="button numberButton">Killer Mode<span> (Shft)</span></button>
         </div>
 
@@ -33,17 +33,17 @@
         </div>
 
         <div class="check-solve">
-            <button id="checkButton" class="button">Check Puzzle</button>
+            <button id="testButton" class="button">Test Puzzle</button>
             <button id="solveButton" class="button">Solve Puzzle</button> 
         </div>
-        <script type="module" src="animation.js"></script> <!-- For animations -->
-        <script type="module" src="buttons.js"></script> <!-- Button logic -->
-        <script type="module" src="colors.js"></script> <!-- Color logic -->
-        <script type="module" src="grid.js"></script> <!-- Grid rendering -->
-        <script type="module" src="keyboard.js"></script> <!-- Keyboard handling -->
-        <script type="module" src="state.js"></script> <!-- State management -->
-        <script type="module" src="sudoku.js"></script> <!-- Sudoku solving logic -->
-        <script type="module" src="utils.js"></script> <!-- Utility functions -->
-        <script type="module" src="box.js"></script> <!-- Box-related logic -->
+        <script type="module" src="javascript/animation.js"></script>
+        <script type="module" src="javascript/buttons.js"></script>
+        <script type="module" src="javascript/colors.js"></script>
+        <script type="module" src="javascript/grid.js"></script>
+        <script type="module" src="javascript/keyboard.js"></script>
+        <script type="module" src="javascript/state.js"></script>
+        <script type="module" src="javascript/sudoku.js"></script>
+        <script type="module" src="javascript/utils.js"></script>
+        <script type="module" src="javascript/box.js"></script>
     </body>
 </html>

@@ -45,7 +45,7 @@ function createBox() {
             state.cells_with_box.push(state.currentBox[i]);
         }
         state.boxes[boxId] = { 'cells': [...state.currentBox], 'sum': sumBox, 'declaredTotal': sumBox }
-        for (let i = 0; i < currentBox.length; i++) {
+        for (let i = 0; i < state.currentBox.length; i++) {
             state.currentBox[i].inBox = boxId;
         }
         state.currentBox = [];
@@ -60,7 +60,7 @@ function addBackDeletedBox() {
         sumBox += currentBox[i].actualValue;
         state.cells_with_box.push(currentBox[i]);
     }
-    boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox }
+    boxes[boxId] = { 'cells': [...currentBox], 'sum': sumBox } // NEEDS TO BE FIXED LATER TO INCLUDE DECLARED TOTAL
     for (let i = 0; i < currentBox.length; i++) {
         state.currentBox[i].inBox = boxId;
     }
@@ -126,7 +126,6 @@ function setBoxTotal(cell) {
         return;
     }
     state.boxes[cell.inBox]['declaredTotal'] = newDeclaredTotal;
-    console.log("boxes", state.boxes);
     let cellContainer = cell.parentElement;
     let span = cellContainer.querySelector('.box-total-note');
     span.textContent = newDeclaredTotal;
