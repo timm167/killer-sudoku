@@ -39,17 +39,12 @@ def validate_box_context(cell, boxes, attemptedValue):
     box = boxes[cell['inBox']]  # Get the box the cell is in
     box_sum = box['sum'] + attemptedValue
     declared_total = box['declaredTotal']
-
-    # If adding the attempted value exceeds the declared total, it's invalid
-    if box_sum > declared_total:
-        print(f"Box sum violation: box sum {box_sum}, attempted value {attemptedValue}, declared total {declared_total}")
-        return False
     
     # Count the number of empty cells in the box
-    empty_cells = sum(1 for box_cell in box['cells'] if box_cell['actualValue'] == 0)
+    empty_cells = sum(1 for box_cell in box['cells'] if box_cell['actualValue'] == 0) - 1
     print(f"Box has {empty_cells} empty cells")
     # If the box is full, make sure the sum matches the declared total
-    if empty_cells == 1:  # The box is full
+    if empty_cells == 0:  # The box is full
         print(f"Box is full, checking sum")
         if box_sum != declared_total:
             print(f"Box is full but sum is {box_sum} instead of {declared_total}.")
@@ -60,9 +55,9 @@ def validate_box_context(cell, boxes, attemptedValue):
     return True
 
 def validate_cell_iteration(cell, boxes, grid, attemptedValue):
-    print("within validating boxes",boxes) ## THIS LINE HERE SHOWS THAT BOXES DOESNT EXIST OR IS EMPTY
-    print("Validating cell")
+    print("within validating boxes",(boxes)) ## THIS LINE HERE SHOWS THAT BOXES DOESNT EXIST OR IS EMPTY
     print(f"Attempting to check if cell {cell['row']}, {cell['col']} can be {attemptedValue}")
     if validate_box_context(cell, boxes, attemptedValue):
         return validate_grid_context(cell, grid, attemptedValue) ## returns true if the constraints are met
     return False ## returns false if the contraints are broken
+
