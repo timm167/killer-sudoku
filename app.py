@@ -4,11 +4,18 @@ from sudoku_logic import check_solvable, check_ways_solvable
 from grid import simplify_grid
 from boxes import simplify_boxes
 import sys 
+import traceback
+import logging
+import json
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.info("Starting Sudoku Solver API")
 
 sys.setrecursionlimit(60000) 
 
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:3000"])
+CORS(app)
 
 # def write_grid_data(data):
 #     with open(JSON_FILE_PATH, 'w') as file:
@@ -59,6 +66,7 @@ def solve():
         })
     
     except Exception as e:
+        print("Error occurred:", traceback.format_exc())
         return jsonify({'error': str(e)}), 500
 
 # @app.route('/store', methods=['POST'])

@@ -15,7 +15,6 @@ const handleSolveButtonClick = async () => {
             // Update state or UI with the result
             state.grid = result.solvedGrid;
             state.boxes = result.solvedBoxes;
-            populateBoxes();
             populateGrid();
 
         } else {

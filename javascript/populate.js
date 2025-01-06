@@ -1,12 +1,17 @@
 import { state } from './state.js';
 
 function populateBoxes(){
-    console.log(state.boxes)
+    console.log(state.boxes);
+    console.log(state.grid);
     for (let key in state.boxes) {
         let box = state.boxes[key];
+        console.log("box:",box);
         let cell = box.cells[0];
-        let first = state.grid[cell.row][cell.col];
-        let cellContainer = first.parentElement;
+        console.log("cell:",cell);
+        let child = state.grid[cell.row][cell.col];
+        console.log("child:",child);
+        let cellContainer = child.parentElement
+        console.log(cellContainer);
         let span = cellContainer.querySelector('.box-total-note');
         span.textContent = box.declaredTotal;
         box.cells.forEach(cell => {
@@ -23,16 +28,13 @@ function populateBoxes(){
 }
 
 function populateGrid(){
-    console.log(state.grid)
-    console.log(state.boxes)
-    for (let r = 0; r < 9; r++) {
+    for (let r = 0; r < 9; r++) { 
         for (let c = 0; c < 9; c++) {
             let cell = state.grid[r][c];
             let inputElement = document.getElementById(`${r}/${c}`);
             if (inputElement && cell.actualValue !== 0) {
                 inputElement.value = cell.actualValue;
             }
-            console.log(state.boxes)
             for (let box_cell of state.boxes[cell.inBox]['cells']) {
                 if (box_cell.row === r && box_cell.col === c) {
                     box_cell.actualValue = cell.actualValue;
