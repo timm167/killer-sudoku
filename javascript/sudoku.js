@@ -24,13 +24,21 @@ function checkSudoku(cell) {
         }
         else {
             // Update the tracking arrays with the new value
-            state.rows[r][cell.id] = value
-            state.cols[c][cell.id] = value
+            state.rows[r][cell.id] = value;
+            state.cols[c][cell.id] = value;
             state.cubes[cubeIndex][cell.id] = value;
-            cell.actualValue = parseInt(value);
+            console.log("updating cell.actualValue")
+            let actualValue = parseInt(value);
+            state.grid[r][c].actualValue = actualValue;
             if (cell.inBox !== null) {
                 state.boxes[cell.inBox]['sum'] += cell.actualValue;
+                for (let box_cell of state.boxes[cell.inBox]['cells']) {
+                    if (box_cell.row === r && box_cell.col === c) {
+                        box_cell.actualValue = actualValue;
+                    }
+                }
             }
+
         }
     }
 }
@@ -45,12 +53,10 @@ function boxFullAndNotEqual(cell){
     }
     counter++;
     if (counter !== state.boxes[cell.inBox]['cells'].length) {
-        console.log("counter", counter);
         return false;
     }
 
     if ((parseInt(state.boxes[cell.inBox]['sum']) + parseInt(cell.value) === state.boxes[cell.inBox]['declaredTotal'])) {
-        console.log("sum", state.boxes[cell.inBox]['sum']);
         return false;
     }
 
@@ -62,9 +68,6 @@ function boxFullAndNotEqual(cell){
 // Helper function to validate the input
 function validateSudoku(cell) {
     let value = cell.value;
-    console.log("validating sudoku");
-    console.log("cell.inBox", cell.inBox);
-    console.log(boxFullAndNotEqual(cell));
     if (!/^\d$/.test(value) || state.isValid === false) {
         clearCell(cell);
     } else if (cell.inBox && boxFullAndNotEqual(cell)) { 
