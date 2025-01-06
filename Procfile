@@ -1,1 +1,1 @@
-web: gunicorn killer_sudoku:app
+web: gunicorn app:app
