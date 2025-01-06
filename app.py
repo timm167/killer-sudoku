@@ -5,14 +5,23 @@ from grid import simplify_grid
 from boxes import simplify_boxes
 
 import sys
+import json
 
 sys.setrecursionlimit(1000) 
 
+JSON_FILE_PATH = "test_data.json"
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 CORS(app, origins=["http://127.0.0.1:3000"])  # Enable CORS for all routes
 
+# def write_grid_data(data):
+#     with open(JSON_FILE_PATH, 'w') as file:
+#         json.dump(data, file, indent=4) 
+
+# def write_box_data(data):
+#     with open(JSON_FILE_PATH, 'w') as file:
+#         json.dump(data, file, indent=4)
 
 # This function just tests the API is working
 def handle_sudoku(fetched_grid, fetched_boxes):
@@ -54,6 +63,25 @@ def solve():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+# @app.route('/store', methods=['POST'])
+# def store():
+#     try:
+#         data = request.get_json()
+#         fetched_grid = data.get('grid')  # grid is expected to be an array of arrays
+#         fetched_boxes = data.get('boxes')  # boxes is expected to be a dictionary with cells, sum, and declaredValue
+#         print("something ")
+#         write_grid_data(data)
+#         write_box_data(data)
+
+#         if not fetched_grid:
+#             return jsonify({'error': 'Grid not provided'}), 400
+
+#         if not fetched_boxes or fetched_boxes == {}:
+#             return jsonify({'error': 'Boxes not provided'}), 400
+        
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

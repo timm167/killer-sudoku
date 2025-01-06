@@ -53,8 +53,6 @@ def validate_box_context(cell, boxes, attemptedValue):
     return True
 
 def validate_cell_iteration(cell, boxes, grid, attemptedValue):
-    print(id(boxes))
-    print(len(boxes))
     print(f"Attempting to check if cell {cell['row']}, {cell['col']} can be {attemptedValue}")
     if validate_box_context(cell, boxes, attemptedValue):
         return validate_grid_context(cell, grid, attemptedValue) ## returns true if the constraints are met
