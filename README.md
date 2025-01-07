@@ -2,9 +2,9 @@
 
 ## How to use
 
-Use the link https://timm167.github.io/killer-sudoku/ to access. **The free render web-service struggles to perform the recusrsion, it is best to run locally.**
+Use the link https://timm167.github.io/killer-sudoku/ to access. For Backend... **The free render web-service struggles to perform the recusrsion, it is best to run locally.**
 
-For local deployment see instructions below.
+For local deployment see instructions at the bottom of this file.
 
 - Click a cell to add a value to it. 
 - To add the 'killer' Sudoku boxes, click killer mode. 
@@ -57,10 +57,33 @@ Feel free to make pull requests, I will be making improvements over time.
 
 ## Local Deployment 
 
-1. In your command line run git clone **https://github.com/timm167/killer-sudoku.git**
-2. CD into the app **cd killer-sudoku**
-3. Run **python3 -m venv .venv** to start the virtual environment
-4. Run **source .venv/bin/activate** (Mac) or (Windows) to activate the virtual environment 
-5. Run **pip install -r requirements.txt** to install requirements
-6. Run **python app.py** to run the app
-7. In a seperate terminal, run ****
+### Follow these instructions or copy/paste the code below them into your terminal.
+1. In your command line ```run git clone https://github.com/timm167/killer-sudoku.git```
+2. CD into the app ```cd killer-sudoku```
+3. Run ```python3 -m venv .venv``` to start the virtual environment
+4. Run ```source .venv/bin/activate``` (Mac) or ```.venv\Scripts\activate``` (Windows) to activate the virtual environment 
+5. Run ```pip install -r requirements.txt``` to install requirements
+6. Run ```python app.py``` to run the app
+7. Head to https://timm167.github.io/killer-sudoku/
+
+### Windows
+```shell
+git clone https://github.com/timm167/killer-sudoku.git
+cd killer-sudoku
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
+https://timm167.github.io/killer-sudoku/
+
+### Mac
+```shell
+git clone https://github.com/timm167/killer-sudoku.git
+cd killer-sudoku
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
+https://timm167.github.io/killer-sudoku/
