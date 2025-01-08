@@ -1,5 +1,5 @@
 # Killer Sudoku Solver app (Prototype)
-## Rebuilding from scratch using React
+## Rebuilding from scratch using React (In Process)
 
 ## How to use
 
