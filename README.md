@@ -1,6 +1,6 @@
 # Killer Sudoku Solver app (Prototype)
 ## !!Broken at present. Fixing in a seperate project but delayed due to course work.
-##Feel free to contribute @https://github.com/timm167/react-sudoku-builder
+## Feel free to contribute @https://github.com/timm167/react-sudoku-builder
 
 ## How to use
 
