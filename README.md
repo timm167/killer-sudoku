@@ -1,5 +1,6 @@
 # Killer Sudoku Solver app (Prototype)
-## Rebuilding from scratch using React and Typescript (In Process)
+## !!Broken at present. Fixing in a seperate project but delayed due to course work.
+##Feel free to contribute @https://github.com/timm167/react-sudoku-builder
 
 ## How to use
 
